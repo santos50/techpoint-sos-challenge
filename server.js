@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 //mongoose
-const uri = process.env.ATLAS_URI;
+const uri = "mongodb+srv://santos50:techpoint1@@techpointsoschallenge.k1k4n.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority";
 mongoose.connect(uri, { useNewUrlParser: true, userCreateIndex: true});
 const connection = mongoose.connection;
 connection.once('open', () => {
