@@ -10,6 +10,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
+    "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
@@ -23,12 +24,13 @@
   },
   "scripts": {
     "dev": "node server.js && react-scripts start",
-    "start": "serve -s build",
+    "client": "serve -s build",
+    "server": "node server.js",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run build",
-    "server": "nodemon server.js"
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
