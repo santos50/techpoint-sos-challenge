@@ -13,7 +13,7 @@ router.route('/').get((req, res) =>{
 });
 
 router.route('/add').post(async (req, res) => {
-  
+  console.log('iN ADDDD');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -70,7 +70,7 @@ router.route('/add').post(async (req, res) => {
 );
 
 router.route('/login').post(async (req, res) => {
-
+    console.log('in loging!!')
       const errors = validationResult(req);
   
       if (!errors.isEmpty()) {

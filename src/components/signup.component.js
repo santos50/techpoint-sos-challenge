@@ -48,7 +48,10 @@ export default class SignUp extends Component {
 
     
         axios.post('https://techpoint-sos-challenge.herokuapp.com/users/add', user)
-          .then(res => console.log(res.data));
+          .then(res => console.log(res.data))
+          .catch(error => {
+            console.log("could not create user", error);
+        });
     
         this.setState({
           name: '',
