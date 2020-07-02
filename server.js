@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 
 //mongoose
 const uri = "mongodb+srv://santos50:techpoint1@@techpointsoschallenge.k1k4n.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority";
-mongoose.connect(uri, { useNewUrlParser: true, userCreateIndex: true});
+mongoose.connect(uri, { useNewUrlParser: true, userCreateIndex: true})
+ .catch(error => handleError(error));
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database collection established successfully");
