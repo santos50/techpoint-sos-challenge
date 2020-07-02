@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
-const imgMyimageexample = require('/Users/diannesantos/Documents/GitHub/techpoint-sos-challenge/src/assets/colts.jpg');
+const imgMyimageexample = require('/Users/diannesantos/Documents/GitHub/techpoint-sos-challenge/src/colts.jpg');
 
 const divStyle = {
   backgroundImage: `url(${imgMyimageexample})`,
