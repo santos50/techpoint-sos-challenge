@@ -12,7 +12,6 @@ const divStyle = {
   backgroundSize: 'cover'
 };
 
-
 function App() {
   return (<Router>
     <div className="App"  style={divStyle}>
