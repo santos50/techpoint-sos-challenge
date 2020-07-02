@@ -47,7 +47,7 @@ export default class SignUp extends Component {
     
 
     
-        axios.post('http://localhost:3000/users/add', user)
+        axios.post('https://techpoint-sos-challenge.herokuapp.com/users/add', user)
           .then(res => console.log(res.data));
     
         this.setState({

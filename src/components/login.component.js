@@ -39,7 +39,7 @@ export default class Login extends Component {
           password: this.state.password,
         }
     
-        axios.post('http://localhost:3000/users/login', user)
+        axios.post('https://techpoint-sos-challenge.herokuapp.com/users/login', user)
           .then(res => {
               if (res.statusText == "OK") {
                  this.setState({
