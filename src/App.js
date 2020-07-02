@@ -5,10 +5,16 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
+const imgMyimageexample = require('/Users/diannesantos/Documents/GitHub/techpoint-sos-challenge/src/assets/colts.jpg');
+
+const divStyle = {
+  backgroundImage: `url(${imgMyimageexample})`,
+  backgroundSize: 'cover'
+};
 
 function App() {
   return (<Router>
-    <div className="App">
+    <div className="App"  style={divStyle}>
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
           <Link className="navbar-brand" to={"/sign-in"}>WebsiteName</Link>
