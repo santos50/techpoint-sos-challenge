@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
 
-const imgMyimageexample = require('./colts.jpg');
+const imgMyimageexample = require('./images/colts.jpg');
 const divStyle = {
   backgroundImage: `url(${imgMyimageexample})`,
   backgroundSize: 'cover'
