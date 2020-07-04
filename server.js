@@ -1,33 +1,31 @@
-const express = require('express')
-const cors = require('cors')
-const mongoose = require('mongoose');
-const bodyParser = require("body-parser");
-
-
-require('dotenv').config();
-
+const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json());
+const mongoose = require('mongoose');
+const MONGODB_URI = "mongodb+srv://santos50:techpoint1@@techpointsoschallenge.k1k4n.gcp.mongodb.net/newDatabase?retryWrites=true&w=majority" || "mongodb://localhost/techpoint_challenge";
 
-//mongoose
-const uri = "mongodb+srv://santos50:techpoint1@@techpointsoschallenge.k1k4n.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority";
-mongoose.connect(uri, { useNewUrlParser: true, userCreateIndex: true})
- .catch(error => handleError(error));
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database collection established successfully");
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
 })
-mongoose.set("useCreateIndex", true);
+.then(() => console.log('Successfully connected to mongodb'))
+.catch(err => console.log(err));
 
-//routing
-//if /users in website, it will load users.js router
-const usersRouter = require('./routes/users');
-app.use('/users', usersRouter);
 
-app.listen(port, ()=> {
-    console.log('Server is running on port: ' + port);
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static("client/build"));
+}
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+const apiRoutes = require("./routes/api-routes");
+app.use(apiRoutes);
+
+app.listen(PORT, () => {
+    console.log(`listening at http://localhost: ${PORT}`)
 });
+
+
