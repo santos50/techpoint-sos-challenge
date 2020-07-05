@@ -1,19 +1,16 @@
 import React, { useEffect } from 'react';
 import './App.css';
+import './index.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
-
-const imgMyimageexample = require('./images/colts.jpg');
-const divStyle = {
-  backgroundImage: `url(${imgMyimageexample})`,
-  backgroundSize: 'cover'
-};
+import Home from "./components/home.component";
 
 function App() {
+  
   // useEffect(() => {
   //   axios.get('/example')
   //   .then(response => console.log(response))
@@ -26,7 +23,7 @@ function App() {
   // });
 
   return (<Router>
-    <div className="App"  style={divStyle}>
+    <div className = "Main">
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
           <Link className="navbar-brand" to={"/sign-in"}>WebsiteName</Link>
@@ -42,17 +39,19 @@ function App() {
           </div>
         </div>
       </nav>
-
+     
+      
+     
       <div className="auth-wrapper">
         <div className="auth-inner">
-          <Switch>
+        <Switch>
             <Route exact path='/' component={Login} />
             <Route path="/sign-in" component={Login} />
             <Route path="/sign-up" component={SignUp} />
           </Switch>
         </div>
       </div>
-    </div></Router>
+   </div></Router>
   );
 }
 

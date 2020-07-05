@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Home from "./home.component";
-import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 export default class Login extends Component {
     constructor(props) {
@@ -49,6 +51,7 @@ export default class Login extends Component {
                      isSuccess: true
                  })
                 
+                 
               }
           })
           .catch(error => {
@@ -65,10 +68,10 @@ export default class Login extends Component {
 
     render() {
         if (this.state.isSuccess == true) {
-            return <Redirect to="/home" component={Home}></Redirect>
+            return <Link className="Main" to="/home" component={Home}></Link>
         }
         return (
-            
+          
             <form onSubmit={this.onSubmit}>
                 <h3>Sign In</h3>
 
@@ -97,6 +100,7 @@ export default class Login extends Component {
                     Forgot <a href="#">password?</a>
                 </p>
             </form>
+          
             
         );
     }
