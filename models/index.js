@@ -1,4 +1,4 @@
 module.exports = {
-    ToDo: require("./ToDo"),
+    Game: require("./Game"),
     User: require("./user")
 };

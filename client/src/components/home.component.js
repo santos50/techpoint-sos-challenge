@@ -3,23 +3,89 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
-import jwt_decode from "jwt-decode";
+import axios from 'axios';
 
 const jwt = require("jsonwebtoken");
 
 
 
+
 class Home extends Component {
 
+
+  constructor(props) {
+    super(props);
+
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeAtHome = this.onChangeAtHome.bind(this);
+
+  
+
+    this.state = {
+      password: '',
+      atHome: true,
+    }
+
+    
+  }
+
+  onChangeAtHome(e) {
+    this.setState({
+      atHome: e.target.value
+    });
+  }
+
+  onChangePassword(e) {
+    this.setState({
+      password: e.target.value
+    })
+  }
+
+
+  onSubmit(e) {
+
+    e.preventDefault();
+    const j = localStorage.getItem('jwtToken'); 
+    var payload = jwt.verify(j, "randomString");
+
+    const user = {
+      username: payload.user.id,
+      atHome: this.state.atHome,
+      password: this.state.password,
+
+    }
+
+
+    axios.post('/userLocation', user)
+          .then(res => {
+            this.props.history.push("/adminMain");
+              
+          })
+          .catch(res => {
+            console.log("login error");
+
+            this.setState({
+                name: '',
+                password: '',
+                passwordError: "incorrect password",
+              })
+        });
+
+
+  }
+
 render() {
-  const j = localStorage.getItem('jwtToken');
-  // const token = jwt.decode(j);
+  const j = localStorage.getItem('jwtToken'); 
+    var payload = jwt.verify(j, "randomString");
+//   const j = localStorage.getItem('jwtToken');
+//   // const token = jwt.decode(j);
 
-//   var ca = localStorage.getItem('jwtToken');
-// var base64Url = ca.split('.')[1];
-// var decodedValue = JSON.parse(window.atob(base64Url));
+// //   var ca = localStorage.getItem('jwtToken');
+// // var base64Url = ca.split('.')[1];
+// // var decodedValue = JSON.parse(window.atob(base64Url));
 
-var payload = jwt.verify(j, "randomString")
+// var payload = jwt.verify(j, "randomString")
 
     const { user } = this.props.auth;
 
@@ -27,13 +93,31 @@ return (
       <div className = "Home">
  <div className="auth-wrapper">
         <div className="auth-inner">
-            <h1>
-       
-              <p>
+            <h3>
               <b>Hey there, {payload.user.id}</b>
-              </p>
-            </h1>
+            </h3>
 
+
+            <div>
+
+
+            <form onSubmit={this.onSubmit}>
+            <div className="form-group">
+              <label>Are you at home or in the stadium?</label>
+                 <input type="radio" value="true" checked={this.state.atHome === 'true'} onChange={this.onChangeAtHome}/> Home 
+                 <input type="radio" value="false" checked={this.state.atHome=== 'false'} onChange={this.onChangeAtHome}/>  Stadium
+            </div>
+
+              <div className="form-group">
+                    <label>If you're an admin, enter the gameroom password</label>
+                    <input type="password" className="form-control" placeholder="Gameroom password" value={this.state.password} onChange={this.onChangePassword}/>
+                </div>
+
+                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+            </form>
+
+
+      </div>
             </div>
             </div>
       </div>

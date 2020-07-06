@@ -7,16 +7,17 @@ const jwt = require("jsonwebtoken");
 
 
 
-router.get("/example", (req, res) => {
-    res.send("message from backend: success");
-});
+// router.get("/example", (req, res) => {
+//     res.send("message from backend: success");
+// });
 
 router.get("/all", (req, res) => {
-    db.ToDo.find().then(todos => res.send(todos));
+    db.Game.find().then(todos => res.send(todos));
 });
 
-router.post("/new", (req, res) => {
-    db.ToDo.create({text: req.body.text}).then(todo => res.send(todo));
+router.post("/userLocation", (req, res) => {
+    // db.ToDo.create({text: req.body.text}).then(todo => res.send(todo));
+    res.status(200).json();
 });
 
 router.post("/add", async (req, res) => {

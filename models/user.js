@@ -23,6 +23,22 @@ const userSchema = new Schema ({
         minLength: 4
     },
 
+    atHome: {
+        type: Boolean,
+        default: true,
+    },
+
+    admin: {
+        type: Boolean,
+        default: false,
+    },
+
+    gamesPlayed: {
+        type: Map,
+        of: [Number],
+        default: undefined,
+    },
+
     }, {
         timestamps: true,
 });

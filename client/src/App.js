@@ -16,6 +16,8 @@ import Login from "./components/login.component";
 import Logout from "./components/logout.component";
 import SignUp from "./components/signup.component";
 import Home from "./components/home.component";
+import AdminMain from "./components/adminMain.component";
+import PlayerMain from "./components/playerMain.component";
 
 
 
@@ -85,6 +87,8 @@ export default class App extends Component {
             <Route path="/sign-up" component={SignUp} />
             <Route path="/logout" component={Logout}/>
             <PrivateRoute exact path="/home" component={Home} />
+            <PrivateRoute exact path="/adminMain" component={AdminMain} />
+            <PrivateRoute exact path="/playerMain" component={PlayerMain} />
           </Switch>
         {/* </div>
       </div> */}

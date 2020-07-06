@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ToDoSchema = new Schema ({
+const GameSchema = new Schema ({
     text: {
         type: String,
         required: "String is required",
@@ -11,5 +11,5 @@ const ToDoSchema = new Schema ({
     }
 });
 
-const ToDo = mongoose.model('ToDo',  ToDoSchema);
-module.exports = ToDo;
+const Game = mongoose.model('ToDo',  GameSchema);
+module.exports = Game;
