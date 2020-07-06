@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Home from "./home.component";
-import { Link } from "react-router-dom";
+import { Route, Link} from "react-router-dom";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../actions/authActions";
+
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
     
@@ -21,6 +26,39 @@ export default class Login extends Component {
         }
       }
     
+
+      componentDidMount() {
+   
+        // If logged in and user navigates to Login page, should redirect them to dashboard
+        if (this.props.auth.isAuthenticated) {
+          this.props.history.push("/home");
+        }
+      }
+
+
+      // static getDerivedStateFromProps(nextProps, prevState) {
+      //   if (nextProps.total !== prevState.total) {
+      //     return ({ total: nextProps.total }) // <- this is setState equivalent
+      //   }
+      //   return null
+      // }
+
+      componentWillReceiveProps(nextProps) {
+        if (nextProps.auth.isAuthenticated) {
+          this.props.history.push("/home"); // push user to dashboard when they login
+        }
+    if (nextProps.errors) {
+          this.setState({
+            errors: nextProps.errors
+          });
+        }
+      }
+
+
+      onChange = e => {
+        this.setState({ [e.target.id]: e.target.value });
+      };
+
       onChangeUsername(e) {
         this.setState({
           username: e.target.value
@@ -41,43 +79,68 @@ export default class Login extends Component {
           password: this.state.password,
         }
 
-        console.log(user);
-    
-        axios.post('/login', user)
-          .then(res => {
 
-              if (res.statusText == "OK") {
-                 this.setState({
-                     isSuccess: true
-                 })
-                
-                 
-              }
-          })
-          .catch(error => {
-            console.log("login error", error);
-
-            this.setState({
-                name: '',
+        this.props.loginUser(user);
+       
+              this.setState({
+                username: '',
                 password: '',
                 passwordError: "incorrect password",
               })
-        });
+      
+        // axios.post('/login', user)
+        //   .then(res => {
+        //     //localStorage.setItem('jwtToken', res.data.token);
+            
+
+        //       if (res.statusText == "OK") {
+        //          this.setState({
+        //              isSuccess: true
+        //          })
+                
+                 
+        //       }
+        //   })
+        //   .catch(res => {
+        //     console.log("login error");
+
+        //     this.setState({
+        //         name: '',
+        //         password: '',
+        //         passwordError: "incorrect password",
+        //       })
+        // });
       }
 
 
     render() {
-        if (this.state.isSuccess == true) {
-            return <Link className="Main" to="/home" component={Home}></Link>
-        }
-        return (
+      const { errors } = this.state;
+        // if (this.state.isSuccess == true) {
+        //   //   return (
+        //   //   <Link
+        //   //   exact
+        //   //   path to={"/home"}
+        //   //   render = {props => (
+        //   //     <Home
+        //   //       {...props}
+        //   //       loggedInStatus={this.state.loggedInStatus}
+        //   //     />
+        //   //   )}
+        //   // > </Link>
           
+        //   //   )
+        //   return <Link className="Main" to="/home" component={Home}></Link>
+        // }
+        return (
+          <div className = "Main">
+          <div className="auth-wrapper">
+        <div className="auth-inner">
             <form onSubmit={this.onSubmit}>
                 <h3>Sign In</h3>
 
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="text" className="form-control" placeholder="Enter email" value={this.state.username} onChange={this.onChangeUsername}/>
+                    <input type="text" className="form-control" placeholder="Enter username" value={this.state.username} onChange={this.onChangeUsername}/>
                 </div>
 
                 <div className="form-group">
@@ -97,11 +160,29 @@ export default class Login extends Component {
 
                 <button type="submit" className="btn btn-primary btn-block">Submit</button>
                 <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
+                    Don't have an account? <a href="/sign-up">Sign up</a>
                 </p>
             </form>
-          
+          </div>
+          </div>
+          </div>
             
         );
     }
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

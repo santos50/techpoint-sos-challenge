@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, withRouter,  } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../actions/authActions";
+
 import Home from "./home.component";
 
 
-export default class SignUp extends Component {
+
+class SignUp extends Component {
     constructor(props) {
         super(props);
     
@@ -22,7 +27,24 @@ export default class SignUp extends Component {
           isSuccess: false,
         }
       }
+
+      componentDidMount() {
+        // If logged in and user navigates to Register page, should redirect them to dashboard
+        if (this.props.auth.isAuthenticated) {
+          this.props.history.push("/home");
+        }
+      }
     
+
+      componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+          this.setState({
+            errors: nextProps.errors
+          });
+        }
+      }
+
+      
       onChangeUsername(e) {
         this.setState({
           username: e.target.value
@@ -50,31 +72,37 @@ export default class SignUp extends Component {
           email: this.state.email
         }
     
-
-    
-        axios.post('/add', user)
-          .then(res => {console.log(res.data);
-            this.setState({
-              isSuccess: true
-            })
-          })
-          .catch(error => {console.log(error);
-            this.setState({
+        this.props.registerUser(user, this.props.history); 
+        
+           this.setState({
               name: '',
               password: '',
               email: '',
               createError: 'Username or email is taken',
             })
-          });
+        // axios.post('/add', user)
+        //   .then(res => {console.log(res.data);
+        //     this.setState({
+        //       isSuccess: true
+        //     })
+        //   })
+        //   .catch(error => {console.log(error);
+        //     this.setState({
+        //       name: '',
+        //       password: '',
+        //       email: '',
+        //       createError: 'Username or email is taken',
+        //     })
+        //   });
     
       }
 
     render() {
 
-      if (this.state.isSuccess == true) {
-        return <Link className="Main" to="/home" component={Home}></Link>
-    }
         return (
+          <div className = "Main">
+          <div className="auth-wrapper">
+        <div className="auth-inner">
             <form onSubmit={this.onSubmit}>
                 <h3>Sign Up</h3>
 
@@ -98,9 +126,28 @@ export default class SignUp extends Component {
 
                 <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                 <p className="forgot-password text-right">
-                    Already registered <a href="/sign-in">sign in?</a>
+                    Already registered? <a href="/sign-in">Sign in</a>
                 </p>
             </form>
+            </div>
+            </div>
+            </div>
         );
     }
 }
+
+SignUp.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(SignUp));

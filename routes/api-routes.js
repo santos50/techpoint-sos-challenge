@@ -53,7 +53,7 @@ router.post("/add", async (req, res) => {
   
         const payload = {
           user: {
-            id: user.id
+            id: user.username
           }
         };
   
@@ -61,12 +61,14 @@ router.post("/add", async (req, res) => {
           payload,
           "randomString",
           {
+
             expiresIn: 10000
           },
           (err, token) => {
             if (err) throw err;
             res.status(200).json({
-              token
+              success: true,
+              token: token
             });
           }
         );
@@ -109,9 +111,11 @@ router.post("/login", async (req, res) => {
   
         const payload = {
           user: {
-            id: user.id
+            id: user.username
           }
         };
+
+      
   
         jwt.sign(
           payload,
@@ -122,7 +126,8 @@ router.post("/login", async (req, res) => {
           (err, token) => {
             if (err) throw err;
             res.status(200).json({
-              token
+              success: true,
+              token: token
             });
           }
         );
