@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import Home from "./home.component";
+import SignUp from "./signup.component";
 import { Route, Link} from "react-router-dom";
 
 import PropTypes from "prop-types";
@@ -160,7 +160,7 @@ class Login extends Component {
 
                 <button type="submit" className="btn btn-primary btn-block">Submit</button>
                 <p className="forgot-password text-right">
-                    Don't have an account? <a href="/sign-up">Sign up</a>
+                    Don't have an account? <a href="/sign-up" component={SignUp}>Sign up</a>
                 </p>
             </form>
           </div>
