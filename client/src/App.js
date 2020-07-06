@@ -81,9 +81,9 @@ export default class App extends Component {
         <div className="auth-inner"> */}
         <Switch>
             <Route exact path='/' component={Login} />
-            <Route exact path="/sign-in" component={Login} />
-            <Route exact path="/sign-up" component={SignUp} />
-            <Route exact path="/logout" component={Logout}/>
+            <Route path="/sign-in" component={Login} />
+            <Route path="/sign-up" component={SignUp} />
+            <Route path="/logout" component={Logout}/>
             <PrivateRoute exact path="/home" component={Home} />
           </Switch>
         {/* </div>
