@@ -1,17 +1,17 @@
 const express = require('express');
 const app = express();
 const passport = require("passport");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 5000;
 
 // Bodyparser middleware
-app.use(
-  bodyParser.urlencoded({
-    extended: false
-  })
-);
-app.use(bodyParser.json());
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: false
+//   })
+// );
+// app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
 const MONGODB_URI = "mongodb+srv://santos50:techpoint1@@techpointsoschallenge.k1k4n.gcp.mongodb.net/newDatabase?retryWrites=true&w=majority" || "mongodb://localhost/techpoint_challenge";
