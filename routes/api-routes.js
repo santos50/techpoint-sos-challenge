@@ -15,9 +15,83 @@ router.get("/all", (req, res) => {
     db.Game.find().then(todos => res.send(todos));
 });
 
-router.post("/userLocation", (req, res) => {
+router.post("/addGame", (req, res) => {
+  const { admin, password, questions, answers, rightAnswers, questionsPointValues } = req.body;
+  db.Game.create({admin, password, questions, answers, rightAnswers, questionsPointValues}, ).then(game => res.send(game));
+});
+
+
+router.post("/userLocation",async (req, res) => {
     // db.ToDo.create({text: req.body.text}).then(todo => res.send(todo));
-    res.status(200).json();
+    const { username, atHome, password } = req.body;
+
+    try {
+      let user = db.User.findOneAndUpdate(
+        {username: username}, 
+        { 
+            $set: {atHome: atHome}
+        },
+        {
+            returnNewDocument: true
+        }
+    , function( error, result){
+      if (!user)
+      return res.status(400).json({
+        message: "User Not Exist"
+      });
+    });
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({
+          message: "Server Error"
+        });
+      }
+
+      try {
+      
+
+        let game = await db.Game.find().sort({_id:-1}).limit(1)
+
+        //console.log(game.password)
+        var isMatch = false;
+
+        if (game[0].password === password) {
+          isMatch = true;
+        } else {
+          isMatch = false;
+        }
+
+        if (!isMatch) {
+          return res.status(400).json({
+            message: "Incorrect Password !"
+          });
+        } else {
+
+          let currGame = db.Game.findOneAndUpdate(
+            {_id: game[0]._id}, 
+            { 
+                $set: {admin: username}
+            },
+            {
+                returnNewDocument: true
+            }
+        , function( error, result){
+          if (!currGame)
+          return res.status(400).json({
+            message: "Game does not Exist"
+          });
+        });
+          return res.status(200).json();
+        }
+
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({
+          message: "Server Error"
+        });
+      }
+
+
 });
 
 router.post("/add", async (req, res) => {

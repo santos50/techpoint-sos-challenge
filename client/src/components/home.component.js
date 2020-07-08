@@ -19,15 +19,22 @@ class Home extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeAtHome = this.onChangeAtHome.bind(this);
+    this.onContinue = this.onContinue.bind(this);
 
   
 
     this.state = {
       password: '',
       atHome: true,
+      continue: true,
     }
 
     
+  }
+
+  onContinue(e) {
+    e.preventDefault();
+    this.props.history.push("/playerMain");
   }
 
   onChangeAtHome(e) {
@@ -59,17 +66,17 @@ class Home extends Component {
 
     axios.post('/userLocation', user)
           .then(res => {
+            //success, they are an admin
             this.props.history.push("/adminMain");
               
           })
           .catch(res => {
-            console.log("login error");
+
+            //updated atHome for user, but is not the admin
+            
 
             this.setState({
-                name: '',
-                password: '',
-                passwordError: "incorrect password",
-              })
+                continue: false,              })
         });
 
 
@@ -113,9 +120,15 @@ return (
                     <input type="password" className="form-control" placeholder="Gameroom password" value={this.state.password} onChange={this.onChangePassword}/>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                <button type="submit" className="btn btn-primary btn-block">Submit</button>            
             </form>
-
+            
+            <div>
+              <br></br>
+            <form  onSubmit={this.onContinue}>
+            {this.state.continue? <div></div> : <button type="submit" className="btn btn-primary btn-block">Password incorrect for game room. Click to continue as player</button>}
+            </form>
+            </div>
 
       </div>
             </div>
