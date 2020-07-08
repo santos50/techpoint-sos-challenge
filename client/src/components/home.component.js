@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../actions/authActions";
-import "../home.css";
+import { logoutUser,setUserAdmin } from "../actions/authActions";
 import axios from 'axios';
 
 const jwt = require("jsonwebtoken");
@@ -25,7 +24,7 @@ class Home extends Component {
 
     this.state = {
       password: '',
-      atHome: true,
+      atHome: undefined,
       continue: true,
     }
 
@@ -34,7 +33,13 @@ class Home extends Component {
 
   onContinue(e) {
     e.preventDefault();
-    this.props.history.push("/playerMain");
+   // this.props.setUserAdmin(user);
+ 
+    (this.state.atHome && this.props.history.push("/homePlayerMain"));
+
+    (this.state.atHome && this.props.history.push("/playerMain"));
+
+
   }
 
   onChangeAtHome(e) {
@@ -85,23 +90,15 @@ class Home extends Component {
 render() {
   const j = localStorage.getItem('jwtToken'); 
     var payload = jwt.verify(j, "randomString");
-//   const j = localStorage.getItem('jwtToken');
-//   // const token = jwt.decode(j);
-
-// //   var ca = localStorage.getItem('jwtToken');
-// // var base64Url = ca.split('.')[1];
-// // var decodedValue = JSON.parse(window.atob(base64Url));
-
-// var payload = jwt.verify(j, "randomString")
 
     const { user } = this.props.auth;
 
 return (
-      <div className = "Home">
+      <div className = "Main">
  <div className="auth-wrapper">
         <div className="auth-inner">
             <h3>
-              <b>Hey there, {payload.user.id}</b>
+              <b>Welcome, {payload.user.id}!</b>
             </h3>
 
 

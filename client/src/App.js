@@ -11,6 +11,7 @@ import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
 import PrivateRoute from "./components/private-route/PrivateRoute";
+import AdminPrivateRoute from "./components/private-route/AdminPrivateRoute";
 
 import Login from "./components/login.component";
 import Logout from "./components/logout.component";
@@ -18,6 +19,7 @@ import SignUp from "./components/signup.component";
 import Home from "./components/home.component";
 import AdminMain from "./components/adminMain.component";
 import PlayerMain from "./components/playerMain.component";
+import HomePlayerMain from "./components/homePlayerMain.component";
 
 
 
@@ -89,6 +91,7 @@ export default class App extends Component {
             <PrivateRoute exact path="/home" component={Home} />
             <PrivateRoute exact path="/adminMain" component={AdminMain} />
             <PrivateRoute exact path="/playerMain" component={PlayerMain} />
+            <PrivateRoute exact path="/homePlayerMain" component={HomePlayerMain} />
           </Switch>
         {/* </div>
       </div> */}

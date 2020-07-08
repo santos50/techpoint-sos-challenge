@@ -6,7 +6,7 @@ import "../home.css";
 
 const jwt = require("jsonwebtoken");
 
-class AdminMain extends Component {
+class HomePlayerMain extends Component {
 
 
   
@@ -19,7 +19,7 @@ return (
  <div className="auth-wrapper">
         <div className="auth-inner">
             <h3>
-              <b>Hey there, {payload.user.id} (admin)</b>
+              <b>Hey there, {payload.user.id} (AtHome)</b>
             </h3>
             </div>
             </div>
@@ -27,8 +27,7 @@ return (
     );
   }
 }
-
-AdminMain.propTypes = {
+HomePlayerMain.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -38,4 +37,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser }
-)(AdminMain);
+)(HomePlayerMain);

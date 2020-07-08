@@ -11,6 +11,15 @@ const jwt = require("jsonwebtoken");
 //     res.send("message from backend: success");
 // });
 
+
+router.post("/getPlayerQuestions", async (req, res) => {
+  let game = await db.Game.find({}, {password: 0}).sort({_id:-1}).limit(1);
+console.log("in getplayequ")
+  console.log(game[0])
+  res.send(game[0]);
+
+});
+
 router.get("/all", (req, res) => {
     db.Game.find().then(todos => res.send(todos));
 });
@@ -81,6 +90,16 @@ router.post("/userLocation",async (req, res) => {
             message: "Game does not Exist"
           });
         });
+
+          db.User.findOneAndUpdate(
+          {username: username}, 
+          { 
+              $set: {admin: true}
+          },
+          {
+              returnNewDocument: true
+          });
+          
           return res.status(200).json();
         }
 

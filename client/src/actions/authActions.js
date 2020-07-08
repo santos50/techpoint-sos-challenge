@@ -4,7 +4,9 @@ import jwt_decode from "jwt-decode";
 import {
   GET_ERRORS,
   SET_CURRENT_USER,
-  USER_LOADING
+  USER_LOADING,
+  USER_ADMIN,
+  RESET_USER_ADMIN
 } from "./types";
 // Register User
 export const registerUser = (userData, history) => dispatch => {
@@ -54,9 +56,28 @@ export const setUserLoading = () => {
     type: USER_LOADING
   };
 };
+
+// Set Admin
+export const setUserAdmin = decoded => {
+  return {
+    type: USER_ADMIN,
+    payload: decoded
+  };
+};
+
+// ResetAdmin
+export const resetUserAdmin = decoded => {
+  return {
+    type: RESET_USER_ADMIN,
+    payload:decoded
+  };
+};
+
 // Log user out
 export const logoutUser = () => dispatch => {
 
+  //Remove Admin Rights
+  resetUserAdmin();
   // Remove token from local storage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
