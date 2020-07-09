@@ -31,13 +31,13 @@ class Home extends Component {
     
   }
 
-  onContinue(e) {
-    e.preventDefault();
+  onContinue() {
+   // e.preventDefault();
    // this.props.setUserAdmin(user);
  
-    (this.state.atHome && this.props.history.push("/homePlayerMain"));
+   // (this.state.atHome && this.props.history.push("/homePlayerMain"));
 
-    (this.state.atHome && this.props.history.push("/playerMain"));
+    this.props.history.push("/playerMain");
 
 
   }
@@ -80,17 +80,18 @@ class Home extends Component {
             //updated atHome for user, but is not the admin
             
 
+            if (this.state.password !== "") {
             this.setState({
                 continue: false,              })
+            } else {
+              this.onContinue();
+            }
         });
 
 
   }
 
 render() {
-  const j = localStorage.getItem('jwtToken'); 
-    var payload = jwt.verify(j, "randomString");
-
     const { user } = this.props.auth;
 
 return (
@@ -98,7 +99,7 @@ return (
  <div className="auth-wrapper">
         <div className="auth-inner">
             <h3>
-              <b>Welcome, {payload.user.id}!</b>
+              <b>Welcome, {user.user.id}!</b>
             </h3>
 
 
@@ -108,8 +109,8 @@ return (
             <form onSubmit={this.onSubmit}>
             <div className="form-group">
               <label>Are you at home or in the stadium?</label>
-                 <input type="radio" value="true" checked={this.state.atHome === 'true'} onChange={this.onChangeAtHome}/> Home 
-                 <input type="radio" value="false" checked={this.state.atHome=== 'false'} onChange={this.onChangeAtHome}/>  Stadium
+                 <input required type="radio" value="true" checked={this.state.atHome === 'true'} onChange={this.onChangeAtHome}/> Home 
+                 <input required type="radio" value="false" checked={this.state.atHome=== 'false'} onChange={this.onChangeAtHome}/>  Stadium
             </div>
 
               <div className="form-group">

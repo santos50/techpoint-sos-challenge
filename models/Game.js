@@ -31,7 +31,7 @@ const GameSchema = new Schema ({
         required: false,
     },
     rightAnswers: {
-        type: [String],
+        type: [Number],
         default: undefined,
         required: false,
     },
@@ -44,6 +44,11 @@ const GameSchema = new Schema ({
     expired: {
         type: Boolean,
         default: false,
+    },
+
+    currentQuestion: {
+        type: Number,
+        default: 0,
     }
 },
     {

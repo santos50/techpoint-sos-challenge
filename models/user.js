@@ -38,6 +38,11 @@ const userSchema = new Schema ({
         of: [Number],
         default: undefined,
     },
+    score: {
+        type: Number,
+        default: 0,
+        required: true,
+    }
 
     }, {
         timestamps: true,

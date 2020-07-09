@@ -14,8 +14,8 @@ const jwt = require("jsonwebtoken");
 
 router.post("/getPlayerQuestions", async (req, res) => {
   let game = await db.Game.find({}, {password: 0}).sort({_id:-1}).limit(1);
-console.log("in getplayequ")
-  console.log(game[0])
+//console.log("in getplayequ")
+  //console.log(game[0])
   res.send(game[0]);
 
 });
@@ -27,6 +27,85 @@ router.get("/all", (req, res) => {
 router.post("/addGame", (req, res) => {
   const { admin, password, questions, answers, rightAnswers, questionsPointValues } = req.body;
   db.Game.create({admin, password, questions, answers, rightAnswers, questionsPointValues}, ).then(game => res.send(game));
+});
+
+router.post("/postQuestion", async (req, res) => {
+  const { question, answers } = req.body;
+
+  //fetch game
+  let game = await db.Game.find().sort({_id:-1}).limit(1)
+
+  //update game in database with new question/answer
+  db.Game.findOneAndUpdate(
+    { _id: game[0]._id }, 
+    { $push: { questions: question, answers: answers } },
+   function (error, success) {
+         if (error) {
+          return res.status(400).json({
+            message: "Not able to post question"
+          });
+         } else {
+           //success
+        //   console.log('in success')
+          return res.status(200).json();
+         }
+     });
+});
+
+router.post('/updateUserScore', async (req, res) => {
+  const { username, score} = req.body;
+console.log(req.body)
+console.log(username)
+console.log(score)
+  //update game in database with new question/answer
+  
+  try {
+    let user = db.User.findOneAndUpdate(
+      {username: username}, 
+      { 
+          $set: {score: score}
+      },
+      {
+          returnNewDocument: true
+      }
+  , function( error, result){
+    if (!user)
+    return res.status(400).json({
+      message: "User Not Exist"
+    });
+  });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({
+        message: "Server Error"
+      });
+    }
+return res.status(200).json();
+
+});
+
+
+router.post("/postCorrectAnswer", async (req, res) => {
+  const {rightAnswer, currQuestion} = req.body;
+
+  //fetch game
+  let game = await db.Game.find().sort({_id:-1}).limit(1)
+
+  //update game in database with new question/answer
+  db.Game.findOneAndUpdate(
+    { _id: game[0]._id }, 
+    { $push: { rightAnswers: rightAnswer }, $set: {currentQuestion: currQuestion} },
+   function (error, success) {
+         if (error) {
+          return res.status(400).json({
+            message: "Not able to post right answer"
+          });
+         } else {
+           //success
+           console.log('in success')
+          return res.status(200).json();
+         }
+     });
 });
 
 
