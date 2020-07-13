@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 
+window.currQuestion = 0;
 class Logout extends Component {
 
  

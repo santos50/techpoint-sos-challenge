@@ -29,6 +29,16 @@ router.post("/addGame", (req, res) => {
   db.Game.create({admin, password, questions, answers, rightAnswers, questionsPointValues}, ).then(game => res.send(game));
 });
 
+router.post("/getLeaderboard", (req, res) => {
+var leaderboard = db.User.find( {score: {$exists: true}} ).sort({score : -1}).limit(5)
+  .then(leaderboard => {
+    // console.log(leaderboard); 
+    res.send(leaderboard)});
+;
+
+
+});
+
 router.post("/postQuestion", async (req, res) => {
   const { question, answers } = req.body;
 
