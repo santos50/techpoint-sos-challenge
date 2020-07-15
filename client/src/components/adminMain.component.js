@@ -7,7 +7,7 @@ import axios from 'axios';
 
 
 const jwt = require("jsonwebtoken");
-var index = 0;
+
 
 class AdminMain extends Component {
 
@@ -103,6 +103,10 @@ onSubmit(e) {
 
 }
   
+onActivate() {
+  window.currQuestion = 0;
+}
+
 render() {
   const j = localStorage.getItem('jwtToken'); 
     var payload = jwt.verify(j, "randomString");
@@ -114,7 +118,9 @@ return (
       <div className = "Home">
  <div className="auth-wrapper">
         <div className="auth-inner">
-<h1>Create Question {window.currQuestion}</h1>
+
+
+<h1>Create Question {window.currQuestion + 1}</h1>
 {/* <h2 style={{postion: "right"}}>{window.currQuestion}</h2> */}
         <form onSubmit={this.onSubmit}>
         <div className="form-group">

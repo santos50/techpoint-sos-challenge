@@ -63,7 +63,7 @@ class Home extends Component {
 
     const user = {
       username: payload.user.id,
-      atHome: this.state.atHome,
+     // atHome: this.state.atHome,
       password: this.state.password,
 
     }
@@ -72,6 +72,7 @@ class Home extends Component {
     axios.post('/userLocation', user)
           .then(res => {
             //success, they are an admin
+            window.currQuestion = 0;
             this.props.history.push("/adminMain");
               
           })
@@ -107,18 +108,19 @@ return (
 
 
             <form onSubmit={this.onSubmit}>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Are you at home or in the stadium?</label>
                  <input required type="radio" value="true" checked={this.state.atHome === 'true'} onChange={this.onChangeAtHome}/> Home 
                  <input required type="radio" value="false" checked={this.state.atHome=== 'false'} onChange={this.onChangeAtHome}/>  Stadium
-            </div>
+            </div> */}
 
               <div className="form-group">
-                    <label>If you're an admin, enter the gameroom password</label>
+                    <label>If you're an admin, enter the gameroom password. Otherwise, continue as player</label>
                     <input type="password" className="form-control" placeholder="Gameroom password" value={this.state.password} onChange={this.onChangePassword}/>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>            
+                <button type="submit" className="btn btn-primary btn-block">Submit</button>  
+                <button onClick={this.onContinue} type="button" className="btn btn-primary btn-block">Continue</button> 
             </form>
             
             <div>

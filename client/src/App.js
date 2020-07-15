@@ -23,7 +23,7 @@ import HomePlayerMain from "./components/homePlayerMain.component";
 
 
 
-
+window.currQuestion = 0;
 if (localStorage.jwtToken) {
   // Set auth token header auth
   const token = localStorage.jwtToken;

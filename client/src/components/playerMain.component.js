@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
+import GameData from '../mockGameData/mockGameUpdates.json';
+import "../playerMain.css";
 
 
 const jwt = require("jsonwebtoken");
@@ -28,14 +30,19 @@ class PlayerMain extends Component {
             userAnswer: '',
             userAnswerIndex: undefined,
             score: 0,
+            topScorers: [],
+            gameData: GameData,
 
         }
       
         
       }
-componentDidMount() {
+async componentDidMount() {
    // index++;
+  // console.log(this.state.gameData[0].play);
     this.getItems();
+    //this.getTopScorers();
+    
 }
 
 
@@ -50,7 +57,7 @@ componentWillUnmount() {
 getItems = () => {
     axios.post('/getPlayerQuestions')
     .then(response => { 
-        console.log(response.data);
+      //  console.log(response.data);
         const data = response.data.questions;
 
      //   {console.log(this.state.question.length, ' ', this.state.currentQuestion)}
@@ -67,20 +74,20 @@ getItems = () => {
 
         if (data != undefined) {
             this.setState({question: data})
-            console.log(this.state.question)
+           // console.log(this.state.question)
         }
 
-        console.log('data received')
+       // console.log('data received')
 
                  // call getData() again in 5 seconds
-              console.log('currentQuestion ', this.state.currentQuestion)
+              //console.log('currentQuestion ', this.state.currentQuestion)
                  if (this.state.rightAnswer != undefined)
                  if (this.state.rightAnswer.length >= this.state.question.length) {
                      if (this.state.userAnswerIndex != undefined) {
                     if (this.state.rightAnswer[this.state.currentQuestion-1] == this.state.userAnswerIndex) {
 
-                        console.log(this.state.rightAnswer[this.state.currentQuestion-1])
-                        console.log(this.state.userAnswerIndex)
+                        //console.log(this.state.rightAnswer[this.state.currentQuestion-1])
+                       // console.log(this.state.userAnswerIndex)
                         this.setState({ score: this.state.score + 5, waiting: false});
                         this.onSubmitScore()
                     } 
@@ -97,7 +104,7 @@ getItems = () => {
 }
 
 displayItems = (question, answers) => {
-    console.log(question);
+    //console.log(question);
     // console.log(currentQuestion)
    // this.setState({question: this.state.question});
 
@@ -125,7 +132,7 @@ onClick(e, index) {
     this.setState({  userAnswer: this.state.answers[this.state.currentQuestion][index], userAnswerIndex: index, waiting: true});
 }
   
-onSubmitScore(e, index) {
+onSubmitScore() {
    // e.preventDefault();
     console.log("in the submittt")
     const j = localStorage.getItem('jwtToken'); 
@@ -151,7 +158,37 @@ onSubmitScore(e, index) {
           console.log(res);
     });
   
+}
 
+getTopScorers() {
+    axios.post('/getLeaderboard')
+      .then(res => {
+        //success
+
+        this.setState( {
+            topScorers: res.data
+        });
+ 
+      })
+      .catch(res => {
+          console.log(res);
+    });
+    this.intervalID = setTimeout(this.getTopScorers.bind(this), 3000);
+}
+
+displayTopScorers() {
+    return ( <div>
+    <h3>
+        <br></br>
+
+        {this.state.topScorers.map((scorers, index) => 
+        <div key={index}>
+            <h3>{scorers.username}: {scorers.score}</h3>
+        </div> 
+        )
+        }
+    </h3>
+</div> )
 }
 
 render() {
@@ -161,8 +198,13 @@ render() {
 return (
 
       <div className = "Home">
- <div className="auth-wrapper">
-        <div className="auth-inner">
+
+<div className="grid">
+  <div className="main-content">
+  
+
+ 
+           
         <h1 style={{color:"blue"}}>{this.state.title}</h1>
         <h4>score: {this.state.score}</h4>
             <div>
@@ -176,8 +218,38 @@ return (
 
             {this.state.waiting? <h3>Waiting for right answer...</h3>
             : <div></div>}
+         
+
             </div>
-            </div>
+
+            <div className="sidebar">
+            
+
+                <h2>Score:</h2>
+            {/* <h3>{this.displayTopScorers()}</h3> */}
+            <br></br>
+
+            <h2>Game top Scorers</h2>
+
+        </div>
+
+        <div className = "twin">
+
+                <h3>Live updates:</h3>
+                <div className="scrollable">
+                {this.state.gameData.map((data, index) =>{
+                    return <div>
+                        {data.play}  <hr/>
+                        </div>
+                } )}
+                </div>
+        </div>
+
+        <div className="twin">
+                <h2>Twitter</h2>
+        </div>
+
+</div>
       </div>
     );
   }

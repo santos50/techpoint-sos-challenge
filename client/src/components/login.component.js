@@ -86,8 +86,8 @@ class Login extends Component {
                 password: '',
                 passwordError: "incorrect password",
               })
-        window.currQuestion = 0;
-        window.start = false;
+        
+      
         // axios.post('/login', user)
         //   .then(res => {
         //     //localStorage.setItem('jwtToken', res.data.token);
