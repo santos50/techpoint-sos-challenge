@@ -123,31 +123,29 @@ router.post("/userLocation",async (req, res) => {
     // db.ToDo.create({text: req.body.text}).then(todo => res.send(todo));
     const { username, atHome, password } = req.body;
 
-    try {
-      let user = db.User.findOneAndUpdate(
-        {username: username}, 
-        { 
-            $set: {atHome: atHome}
-        },
-        {
-            returnNewDocument: true
-        }
-    , function( error, result){
-      if (!user)
-      return res.status(400).json({
-        message: "User Not Exist"
-      });
-    });
-      } catch (e) {
-        console.error(e);
-        res.status(500).json({
-          message: "Server Error"
-        });
-      }
+    // try {
+    //   db.User.findOneAndUpdate(
+    //     {username: username}, 
+    //     { 
+    //         $set: {atHome: atHome}
+    //     },
+    //     {
+    //         returnNewDocument: true
+    //     }
+    // , function( error, result){
+    //   if (error)
+    //   return res.status(400).json({
+    //     message: "User Not Exist"
+    //   });
+    // });
+    //   } catch (e) {
+    //     console.error(e);
+    //     res.status(500).json({
+    //       message: "Server Error"
+    //     });
+    //   }
 
       try {
-      
-
         let game = await db.Game.find().sort({_id:-1}).limit(1)
 
         //console.log(game.password)
@@ -165,7 +163,10 @@ router.post("/userLocation",async (req, res) => {
           });
         } else {
 
-          let currGame = db.Game.findOneAndUpdate(
+          // console.log('ID NAME: ', game[0])
+          // console.log(username);
+
+          db.Game.findOneAndUpdate(
             {_id: game[0]._id}, 
             { 
                 $set: {admin: username}
@@ -174,7 +175,7 @@ router.post("/userLocation",async (req, res) => {
                 returnNewDocument: true
             }
         , function( error, result){
-          if (!currGame)
+          if (error)
           return res.status(400).json({
             message: "Game does not Exist"
           });
@@ -188,7 +189,6 @@ router.post("/userLocation",async (req, res) => {
           {
               returnNewDocument: true
           });
-          
           return res.status(200).json();
         }
 

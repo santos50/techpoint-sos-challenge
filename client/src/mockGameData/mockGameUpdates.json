@@ -1,0 +1,47 @@
+[   {
+         "id": 1,
+        "play": "Will Fuller is heading to the locker room to be evaluated.",
+        "colts-points": 0,
+        "texans-points": 0,
+        "time": "",
+        "yards": ""
+    },
+    
+    {
+        "id": 2,
+        "play": "Watt bats down Brissett's quick slant",
+        "colts-points": 0,
+        "texans-points": 0,
+        "time": "",
+        "yards": ""
+
+    },
+
+    {
+        "id": 3,
+        "play": "CATCH BY ROGERS. Tipped by the defender and still caught, and seemingly both feet down for the completion and a 19-yard gain.",
+        "colts-points": 0,
+        "texans-points": 0,
+        "time": "5:40 remaining in 1st",
+        "yards": "2nd and 7"
+
+    },
+
+    {
+        "id": 4,
+        "play": "Short slant pass from Brissett to Pascal, who scoots forward for the TD to draw first blood.",
+        "colts-points": 6,
+        "texans-points": 0,
+        "time": "5:01 remaining in 1st",
+        "yards": "3rd and 5"
+    },
+
+    {
+        "id": 5,
+        "play": "Texans Injury Update: S Tashaun Gipson Sr. is questionable with a back injury.",
+        "colts-points": 6,
+        "texans-points": 0,
+        "time": "4:46 remaining in 1st",
+        "yards": ""
+    }
+]

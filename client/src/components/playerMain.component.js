@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
+import GameData from '../mockGameData/mockGameUpdates.json';
+import "../playerMain.css";
 
 
 const jwt = require("jsonwebtoken");
@@ -29,13 +31,15 @@ class PlayerMain extends Component {
             userAnswerIndex: undefined,
             score: 0,
             topScorers: [],
+            gameData: GameData,
 
         }
       
         
       }
-componentDidMount() {
+async componentDidMount() {
    // index++;
+  // console.log(this.state.gameData[0].play);
     this.getItems();
     //this.getTopScorers();
     
@@ -195,13 +199,12 @@ return (
 
       <div className = "Home">
 
-<div className="row">
-  <div className="column">
+<div className="grid">
+  <div className="main-content">
   
 
- <div className="auth-wrapper">
-        <div className="auth-inner">
-            <br></br>
+ 
+           
         <h1 style={{color:"blue"}}>{this.state.title}</h1>
         <h4>score: {this.state.score}</h4>
             <div>
@@ -215,20 +218,37 @@ return (
 
             {this.state.waiting? <h3>Waiting for right answer...</h3>
             : <div></div>}
-            </div>
-            </div>
+         
 
             </div>
-            <div className="column">
 
-<div className="auth-wrapper">
-    <div className="auth-inner">
-                <h2>top scorers:</h2>
+            <div className="sidebar">
+            
+
+                <h2>Score:</h2>
             {/* <h3>{this.displayTopScorers()}</h3> */}
+            <br></br>
 
-    </div>
-</div>
-</div>
+            <h2>Game top Scorers</h2>
+
+        </div>
+
+        <div className = "twin">
+
+                <h3>Live updates:</h3>
+                <div className="scrollable">
+                {this.state.gameData.map((data, index) =>{
+                    return <div>
+                        {data.play}  <hr/>
+                        </div>
+                } )}
+                </div>
+        </div>
+
+        <div className="twin">
+                <h2>Twitter</h2>
+        </div>
+
 </div>
       </div>
     );
