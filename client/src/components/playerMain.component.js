@@ -8,6 +8,8 @@ import GameData from '../mockGameData/mockGameUpdates.json';
 import "../playerMain.css";
 
 
+
+
 const jwt = require("jsonwebtoken");
 var index = 0;
 
@@ -26,12 +28,15 @@ class PlayerMain extends Component {
             title: '',
             currentQuestion: 0,
             waiting: false,
+            firstTweets: true,
             rightAnswer: [],
             userAnswer: '',
             userAnswerIndex: undefined,
             score: 0,
             topScorers: [],
             gameData: GameData,
+            tweets: [],
+            tweetsCheckIndex: 0,
 
         }
       
@@ -40,17 +45,19 @@ class PlayerMain extends Component {
 async componentDidMount() {
    // index++;
   // console.log(this.state.gameData[0].play);
+  console.log(this.state.currentQuestion);
     this.getItems();
     //this.getTopScorers();
     
 }
 
 
-componentWillUnmount() {
+async componentWillUnmount() {
     /*
       stop getData() from continuing to run even
       after unmounting this component
     */
+   console.log('interval id: ', this.intervalID);
     clearInterval(this.intervalID);
   }
 
@@ -60,9 +67,7 @@ getItems = () => {
       //  console.log(response.data);
         const data = response.data.questions;
 
-     //   {console.log(this.state.question.length, ' ', this.state.currentQuestion)}
-
-       // {console.log(this.state.question.length, ' ', this.state.currentQuestion)}
+    
 
         this.setState({
             answers: response.data.answers,
@@ -89,7 +94,7 @@ getItems = () => {
                         //console.log(this.state.rightAnswer[this.state.currentQuestion-1])
                        // console.log(this.state.userAnswerIndex)
                         this.setState({ score: this.state.score + 5, waiting: false});
-                        this.onSubmitScore()
+                        //this.onSubmitScore()
                     } 
                     this.setState({userAnswerIndex: undefined, userAnwer: ''});
                 }
@@ -100,7 +105,29 @@ getItems = () => {
     })
     .catch(err => console.log(err));
 
-    this.intervalID = setTimeout(this.getItems.bind(this), 3000);
+
+
+    axios.post('/getTweets')
+    .then(response => {
+
+        if (this.state.firstTweets) {
+            this.setState({tweets: response.data, firstTweets: false, tweetsCheckIndex: response.data.length})
+        }
+
+        if (response.data[0].id != this.state.tweets[this.state.tweets.length - this.state.tweetsCheckIndex].id) {
+            var newTweets = this.state.tweets.concat(response.data);
+            this.setState( {
+                tweets: newTweets,
+            });
+            this.setState({tweetsCheckIndex: response.data.length})
+        }
+       
+    })
+    .catch( err=>console.log(err));
+
+
+
+    this.intervalID = setTimeout(this.getItems.bind(this), 5000);
 }
 
 displayItems = (question, answers) => {
@@ -226,10 +253,12 @@ return (
             
 
                 <h2>Score:</h2>
-            {/* <h3>{this.displayTopScorers()}</h3> */}
+
+            
             <br></br>
 
             <h2>Game top Scorers</h2>
+            {/* <h3>{this.displayTopScorers()}</h3> */}
 
         </div>
 
@@ -245,8 +274,25 @@ return (
                 </div>
         </div>
 
-        <div className="twin">
-                <h2>Twitter</h2>
+        <div className = "twin">
+
+
+                <h3>Live Tweets:</h3>
+                <div className="scrollable">
+                {this.state.tweets.map((data, index) =>{
+                    return <div className = "tweet">
+
+                        
+                        <img className="profilePicture" src={data.user.profile_image_url}></img>
+                        <b>      {data.user.name} @{data.user.screen_name}</b>
+
+                        <p>{data.text} </p>
+                         <hr/>
+
+                        
+                        </div>
+                } )}
+                </div>
         </div>
 
 </div>

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const passport = require("passport");
 const path = require('path');
+require('dotenv').config();
 // const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 // app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
-const MONGODB_URI = "mongodb+srv://santos50:techpoint1@@techpointsoschallenge.k1k4n.gcp.mongodb.net/newDatabase?retryWrites=true&w=majority" || "mongodb://localhost/techpoint_challenge";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/techpoint_challenge";
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,

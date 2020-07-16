@@ -4,13 +4,43 @@ const db = require('../models');
 const { check, validationResult} = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Twit = require('Twit');
+require('dotenv').config();
 
+const T = new Twit ({
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token: process.env.ACCESS_TOKEN,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET,
+});
+
+//var stream = T.stream('statuses/filter', {track: '#IndianapolisColts'})
 
 
 // router.get("/example", (req, res) => {
 //     res.send("message from backend: success");
 // });
 
+
+router.post('/getTweets', (req,res) => {
+  console.log('tweets')
+
+  var params = {
+    q: '#colts',
+    count: 5,
+    result_type: 'recent',
+    lang: 'en'
+  }
+
+
+  T.get('search/tweets', params, function(err, data, response) {
+  if (!err) {
+    res.send(data.statuses)
+  } else {
+    console.log(err)
+  }
+  })
+});
 
 router.post("/getPlayerQuestions", async (req, res) => {
   let game = await db.Game.find({}, {password: 0}).sort({_id:-1}).limit(1);
