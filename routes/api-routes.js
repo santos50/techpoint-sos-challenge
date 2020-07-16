@@ -4,7 +4,7 @@ const db = require('../models');
 const { check, validationResult} = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Twit = require('Twit');
+//const Twit = require('Twit');
 require('dotenv').config();
 
 // const T = new Twit ({
