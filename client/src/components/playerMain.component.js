@@ -6,7 +6,9 @@ import "../home.css";
 import axios from 'axios';
 import GameData from '../mockGameData/mockGameUpdates.json';
 import "../playerMain.css";
-
+import coltsLogo from '../images/indianapolis-colts-logo.png';
+import texansLogo from '../images/houston-texans-logo.png';
+import possession from '../images/possession-football.png';
 
 
 
@@ -252,12 +254,25 @@ return (
             <div className="sidebar">
             
 
-                <h2>Score:</h2>
+                <h3>Current Score:</h3>
 
+                <div className="wrapper">
+                    <div className="one"><img className="profilePicture" width={78} height={60} src={coltsLogo}></img></div>
+                    <div className="two"><h3>7</h3></div>
+                    <div className="three"><img className="profilePicture" width={80} height={60} src={texansLogo}></img></div>
+                    <div className="four"><h3>0</h3></div>
+                    <div className="five"></div>
+                    <div className="six"><img className="profilePicture" width={75} height={70} src={possession}></img></div>
+                </div>
+                <br/>
+                <div>
+                    <h4>{this.state.gameData[4].time}</h4>
+                    <h4>{this.state.gameData[3].yards}</h4>
+                </div>
             
             <br></br>
 
-            <h2>Game top Scorers</h2>
+            {/* <h2>Game top Scorers</h2> */}
             {/* <h3>{this.displayTopScorers()}</h3> */}
 
         </div>
@@ -267,9 +282,9 @@ return (
                 <h3>Live updates:</h3>
                 <div className="scrollable">
                 {this.state.gameData.map((data, index) =>{
-                    return <div>
+                    return (<div>
                         {data.play}  <hr/>
-                        </div>
+                        </div>)
                 } )}
                 </div>
         </div>

@@ -66,3 +66,48 @@ div.scrollable {
   }
 
 /*End Tweets CSS*/
+
+
+/*Score*/
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+  }
+
+  .one {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 10px;
+    border: 1px solid navy;
+  }
+  .two { 
+    grid-column: 2;
+    grid-row: 1;
+    padding: 30px;
+    border: 1px solid navy;
+  }
+  .three {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 10px;
+    border: 1px solid crimson;
+  }
+  .four {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 30px;
+    border: 1px solid crimson;
+  }
+  .five {
+    grid-column: 3;
+    grid-row: 1;
+    padding: 10px;
+  }
+  .six {
+    grid-column: 3;
+    grid-row: 2;
+    padding: 10px;
+  }
+/*End Score*/
