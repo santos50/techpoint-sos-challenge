@@ -284,7 +284,7 @@ return (
 
                         
                         <img className="profilePicture" src={data.user.profile_image_url}></img>
-                        <b>      {data.user.name} @{data.user.screen_name}</b>
+                        <b> &nbsp; {data.user.name} &nbsp;@{data.user.screen_name}</b>
 
                         <p>{data.text} </p>
                          <hr/>

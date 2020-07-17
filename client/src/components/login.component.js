@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { loginUser } from "../actions/authActions";
 
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import logo from '../images/whistle-main.png';
 
 window.currQuestion = 0;
 window.start = false;
@@ -86,57 +87,21 @@ class Login extends Component {
                 password: '',
                 passwordError: "incorrect password",
               })
-        
-      
-        // axios.post('/login', user)
-        //   .then(res => {
-        //     //localStorage.setItem('jwtToken', res.data.token);
-            
-
-        //       if (res.statusText == "OK") {
-        //          this.setState({
-        //              isSuccess: true
-        //          })
-                
-                 
-        //       }
-        //   })
-        //   .catch(res => {
-        //     console.log("login error");
-
-        //     this.setState({
-        //         name: '',
-        //         password: '',
-        //         passwordError: "incorrect password",
-        //       })
-        // });
       }
 
 
     render() {
       const { errors } = this.state;
-        // if (this.state.isSuccess == true) {
-        //   //   return (
-        //   //   <Link
-        //   //   exact
-        //   //   path to={"/home"}
-        //   //   render = {props => (
-        //   //     <Home
-        //   //       {...props}
-        //   //       loggedInStatus={this.state.loggedInStatus}
-        //   //     />
-        //   //   )}
-        //   // > </Link>
-          
-        //   //   )
-        //   return <Link className="Main" to="/home" component={Home}></Link>
-        // }
+
         return (
           <div className = "Main">
           <div className="auth-wrapper">
         <div className="auth-inner">
             <form onSubmit={this.onSubmit}>
-                <h3>Sign In</h3>
+
+            <h3>Welcome to Whistle</h3>
+            <h3><img border-radius={50} width={135} height={75} alt="" src={logo}/></h3>
+            <h6 className="text-center">Sign in</h6>
 
                 <div className="form-group">
                     <label>Username</label>

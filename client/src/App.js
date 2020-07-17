@@ -21,6 +21,8 @@ import AdminMain from "./components/adminMain.component";
 import PlayerMain from "./components/playerMain.component";
 import HomePlayerMain from "./components/homePlayerMain.component";
 
+import logo from './images/whistle-main.png';
+
 
 
 window.currQuestion = 0;
@@ -65,7 +67,7 @@ export default class App extends Component {
     
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-          <Link className="navbar-brand" to={"/sign-in"}>WebsiteName</Link>
+          <Link className="navbar-brand"to={"/sign-in"}><h3>Whistle&nbsp;<img width={54} height={30} src={logo}/></h3></Link>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">

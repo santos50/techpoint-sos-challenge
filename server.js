@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 // app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
-const MONGODB_URI = "mongodb+srv://newUser:techpoint12312@techpointsoschallenge.k1k4n.gcp.mongodb.net/newDatabase?retryWrites=true&w=majority" || "mongodb://localhost/techpoint_challenge";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/techpoint_challenge";
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
