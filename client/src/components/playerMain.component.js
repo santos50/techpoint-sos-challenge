@@ -251,6 +251,8 @@ return (
 
         {/* Section 2: Top right area with the current game score and potentially for the game's top scorers */}
             <div className="sidebar">
+            <table width={100}>
+                <tr>
                 <h3>Current Score:</h3>
 
                 <div className="wrapper">
@@ -269,10 +271,12 @@ return (
                     <h4>{this.state.gameData[3].yards}</h4>
                 </div>
             
-            <br/>
-
-                {/* <h2>Game top Scorers</h2> */}
-                {/* <h3>{this.displayTopScorers()}</h3> */}
+                </tr>
+                <tr>
+                    <h2>Game top Scorers</h2> 
+                {/* <h3>{this.displayTopScorers()}</h3>*/}
+                </tr>
+                </table>
             </div>
 
         
