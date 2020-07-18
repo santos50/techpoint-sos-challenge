@@ -2,7 +2,6 @@ import React, { useEffect, Component } from 'react';
 import './App.css';
 import './index.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -20,6 +19,7 @@ import Home from "./components/home.component";
 import AdminMain from "./components/adminMain.component";
 import PlayerMain from "./components/playerMain.component";
 import HomePlayerMain from "./components/homePlayerMain.component";
+import CreateGame from "./components/createGame.component";
 
 import logo from './images/whistle-main.png';
 
@@ -92,6 +92,7 @@ export default class App extends Component {
             <Route path="/logout" component={Logout}/>
             <PrivateRoute exact path="/home" component={Home} />
             <PrivateRoute exact path="/adminMain" component={AdminMain} />
+            <PrivateRoute exact path="/createGame" component={CreateGame} />
             <PrivateRoute exact path="/playerMain" component={PlayerMain} />
             <PrivateRoute exact path="/homePlayerMain" component={HomePlayerMain} />
           </Switch>

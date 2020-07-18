@@ -8,6 +8,7 @@ const GameSchema = new Schema ({
         minLength: 4,
         required: true,
         unique: true,
+        default: "Game Session"
     },
     admin: {
         type: String,
@@ -17,7 +18,7 @@ const GameSchema = new Schema ({
     },
     password: {
         type: String,
-        default: "colts",
+        default: "pacers",
         required: true,
     },
     questions: {
@@ -44,6 +45,11 @@ const GameSchema = new Schema ({
     expired: {
         type: Boolean,
         default: false,
+    },
+
+    hashtag: {
+        type: String,
+        default: "#WhistleSports",
     },
 
     currentQuestion: {

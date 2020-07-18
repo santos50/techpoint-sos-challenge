@@ -226,34 +226,31 @@ render() {
 
 return (
 
-      <div className = "Home">
+<div className = "playerHome">
+    <div className="grid">
 
-<div className="grid">
-  <div className="main-content">
-  
 
- 
-           
-        <h1 style={{color:"blue"}}>{this.state.title}</h1>
-        <h4>score: {this.state.score}</h4>
-            <div>
-                {this.state.question.length < this.state.currentQuestion? <h2>waiting on question</h2>: 
-                this.displayItems(this.state.question, this.state.answers)}
-                
-            </div>
+
+        {/* Section 1: The area of the top left where the questions and answers are shown for the player */}
+        <div className="main-content">  
+            <h1 style={{color:"blue"}}>{this.state.title}</h1>
+            <h4>score: {this.state.score}</h4>
+                <div>
+                    {this.state.question.length < this.state.currentQuestion? <h2>waiting on question</h2>: 
+                    this.displayItems(this.state.question, this.state.answers)}
+                </div>
 
             {this.state.waiting? <h3>You selected: {this.state.userAnswer}</h3>
             : <div></div>}
 
             {this.state.waiting? <h3>Waiting for right answer...</h3>
             : <div></div>}
-         
-
             </div>
 
-            <div className="sidebar">
-            
 
+
+        {/* Section 2: Top right area with the current game score and potentially for the game's top scorers */}
+            <div className="sidebar">
                 <h3>Current Score:</h3>
 
                 <div className="wrapper">
@@ -264,54 +261,57 @@ return (
                     <div className="five"></div>
                     <div className="six"><img className="profilePicture" width={75} height={70} src={possession}></img></div>
                 </div>
+
                 <br/>
+
                 <div>
                     <h4>{this.state.gameData[4].time}</h4>
                     <h4>{this.state.gameData[3].yards}</h4>
                 </div>
             
-            <br></br>
+            <br/>
 
-            {/* <h2>Game top Scorers</h2> */}
-            {/* <h3>{this.displayTopScorers()}</h3> */}
+                {/* <h2>Game top Scorers</h2> */}
+                {/* <h3>{this.displayTopScorers()}</h3> */}
+            </div>
 
-        </div>
-
+        
+        {/* Section 3: Bottom left area with the game live updates */}
         <div className = "twin">
-
                 <h3>Live updates:</h3>
                 <div className="scrollable">
-                {this.state.gameData.map((data, index) =>{
-                    return (<div>
-                        {data.play}  <hr/>
+                    {this.state.gameData.map((data, index) =>{
+                        return (
+                        <div>
+                            {data.play}  
+                            <hr/>
                         </div>)
-                } )}
+                    })}
                 </div>
         </div>
 
+        
+
+        {/* Section 4: Bottom right area with the live tweets */}
         <div className = "twin">
-
-
-                <h3>Live Tweets:</h3>
+            <h3>Live Tweets:</h3>
+                
                 <div className="scrollable">
-                {this.state.tweets.map((data, index) =>{
-                    return <div className = "tweet">
-
-                        
+                    {this.state.tweets.map((data, index) =>{
+                        return <div className = "tweet">
                         <img className="profilePicture" src={data.user.profile_image_url}></img>
                         <b> &nbsp; {data.user.name} &nbsp;@{data.user.screen_name}</b>
-
                         <p>{data.text} </p>
                          <hr/>
-
-                        
                         </div>
-                } )}
+                    })}
                 </div>
         </div>
+        {/* End of Section 4 */}
 
+    </div>
 </div>
-      </div>
+
     );
   }
 }

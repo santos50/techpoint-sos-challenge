@@ -54,9 +54,29 @@ router.get("/all", (req, res) => {
     db.Game.find().then(todos => res.send(todos));
 });
 
+
+router.post("/getCurrentQuestion", async (req, res) => {
+  let game = await db.Game.find().sort({_id:-1}).limit(1)
+  res.send(game[0]);
+});
+
+
+
 router.post("/addGame", (req, res) => {
-  const { admin, password, questions, answers, rightAnswers, questionsPointValues } = req.body;
-  db.Game.create({admin, password, questions, answers, rightAnswers, questionsPointValues}, ).then(game => res.send(game));
+  const { title, hashtag, admin, currentQuestion } = req.body;
+
+  db.Game.create({
+          title,
+          hashtag,
+          admin,
+          currentQuestion,
+          // password,
+          // questions,
+          // answers,
+          // rightAnswers,
+          // questionPointValues,
+          // expired
+        }, ).then(game => res.send(game));
 });
 
 router.post("/getLeaderboard", (req, res) => {
