@@ -18,6 +18,7 @@ import SignUp from "./components/signup.component";
 import Home from "./components/home.component";
 import AdminMain from "./components/adminMain.component";
 import PlayerMain from "./components/playerMain.component";
+import PlayerMainEdit from "./components/playerMainEdit.component";
 import HomePlayerMain from "./components/homePlayerMain.component";
 import CreateGame from "./components/createGame.component";
 
@@ -90,6 +91,7 @@ export default class App extends Component {
             <Route path="/sign-in" component={Login} />
             <Route path="/sign-up" component={SignUp} />
             <Route path="/logout" component={Logout}/>
+            <Route path="/playerMainEdit" component={PlayerMainEdit}/>
             <PrivateRoute exact path="/home" component={Home} />
             <PrivateRoute exact path="/adminMain" component={AdminMain} />
             <PrivateRoute exact path="/createGame" component={CreateGame} />
