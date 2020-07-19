@@ -11,10 +11,16 @@ import texansLogo from '../images/houston-texans-logo.png';
 import possession from '../images/possession-football.png';
 import UIfx from 'uifx'
 import whistleAudio from '../images/whistle.m4a';
+import { session } from "passport";
 
 
 
 const jwt = require("jsonwebtoken");
+const item = localStorage.getItem('jwtToken');
+sessionStorage.setItem(item, 0);
+var sessionScore = parseInt(sessionStorage.getItem(item));
+
+
 
 const audio = new UIfx(
     whistleAudio,
@@ -50,6 +56,9 @@ class PlayerMain extends Component {
             tweets: [],
             tweetsCheckIndex: 0,
             playAudio: true,
+            isCorrectAnswer: false,
+            correctAnswerText: '',
+            color: '',
 
         }
       
@@ -110,9 +119,16 @@ getItems = () => {
 
                         //console.log(this.state.rightAnswer[this.state.currentQuestion-1])
                        // console.log(this.state.userAnswerIndex)
-                        this.setState({ score: this.state.score + 5, waiting: false});
-                        //this.onSubmitScore()
+                       sessionScore += 5;
+
+                       sessionStorage.setItem(item, sessionScore);
+
+                        this.setState({  waiting: false, isCorrectAnswer: true, correctAnswerText: 'Correct! ✅', color: 'green' });
+                        this.onSubmitScore()
                     } 
+                        if (!this.state.isCorrectAnswer) {
+                            this.setState({isCorrectAnswer: true, correctAnswerText: 'Wrong ❌', color: 'red'})
+                        }
                     this.setState({userAnswerIndex: undefined, userAnwer: ''});
                 }
 
@@ -147,7 +163,9 @@ getItems = () => {
     })
     .catch( err=>console.log(err));
 
+    this.getTopScorers();
 
+    this.setState({isCorrectAnswer: false})
 
     this.intervalID = setTimeout(this.getItems.bind(this), 5000);
 }
@@ -195,7 +213,7 @@ onSubmitScore() {
 
     const userScore = {
         username: payload.user.id,
-        score: this.state.score,
+        score: sessionScore,
       }
   
       axios.post('/updateUserScore', userScore)
@@ -228,7 +246,7 @@ getTopScorers() {
       .catch(res => {
           console.log(res);
     });
-    this.intervalID = setTimeout(this.getTopScorers.bind(this), 3000);
+  
 }
 
 displayTopScorers() {
@@ -260,8 +278,12 @@ return (
         {/* Section 1: The area of the top left where the questions and answers are shown for the player */}
         <div className="main-content">  
             <h1 style={{color:"blue"}}>{this.state.title}</h1>
-            <h4>score: {this.state.score}</h4>
+            <h4>score: {sessionScore}</h4>
                 <div>
+                    <br/>
+                    {this.state.isCorrectAnswer? <h3 style={{color: this.state.color}}>{this.state.correctAnswerText}</h3>
+                    : <div></div>} 
+                    <br/>
                     {this.state.question.length < this.state.currentQuestion? <h2>waiting on question</h2>: 
                     this.displayItems(this.state.question, this.state.answers)}
                 </div>
@@ -271,7 +293,7 @@ return (
 
             {this.state.waiting? <h3>Waiting for right answer...</h3>
             : <div></div>}
-
+         
             
             </div>
 
@@ -302,7 +324,7 @@ return (
                 </tr>
                 <tr>
                     <h2>Game top Scorers</h2> 
-                {/* <h3>{this.displayTopScorers()}</h3>*/}
+                <h3>{this.displayTopScorers()}</h3>
                 </tr>
                 </td>
             </div>

@@ -6,6 +6,7 @@ import "../home.css";
 import axios from 'axios';
 import {DropdownButton, Dropdown} from 'react-bootstrap'
 
+var sessionCurrentQuestion = parseInt(sessionStorage.getItem("currentQuestion"));
 
 class AdminMain extends Component {
 
@@ -24,6 +25,7 @@ class AdminMain extends Component {
             rightAnswer: 0,
             started: false,
             posted: false,
+            points: 'Points'
         }
       
         
@@ -39,6 +41,7 @@ onEndGame() {
         rightAnswer: 0,
         posted: false,
     });
+    sessionStorage.setItem("currentQuestion", 0);
       this.forceUpdate();
     })
     .catch(res => {
@@ -94,10 +97,12 @@ onSubmit(e) {
 
     window.currQuestion++;
 
-    
+    sessionCurrentQuestion++;
+    sessionStorage.setItem('currentQuestion', sessionCurrentQuestion);
+
     const gameItems = {
       rightAnswer: this.state.rightAnswer,
-      currQuestion: window.currQuestion,
+      currQuestion: sessionCurrentQuestion,
     }
    
     console.log(gameItems);
@@ -133,7 +138,7 @@ return (
         <div className="auth-inner">
 
 
-<h1>Create Question {window.currQuestion + 1}</h1>
+<h1>Create Question {sessionCurrentQuestion + 1}</h1>
 {/* <h2 style={{postion: "right"}}>{window.currQuestion}</h2> */}
         <form onSubmit={this.onSubmit}>
         <div className="form-group">
@@ -160,11 +165,13 @@ return (
                             value={answer}/> 
 
                             <button type="button" onClick ={()=> this.removeAnswer(index)} >X</button>
-                            <DropdownButton direction="right" size="sm" title="Points">
-  <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-  <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-  <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-</DropdownButton>
+                            <DropdownButton direction="right"  width= "50" size="sm" title="Points" >
+                                <Dropdown.Item>1</Dropdown.Item>
+                                <Dropdown.Item>5</Dropdown.Item>
+                                <Dropdown.Item >7</Dropdown.Item>
+                                <Dropdown.Item >10</Dropdown.Item>
+                            </DropdownButton>
+                        <br/>
                         </div>
 
                     )
