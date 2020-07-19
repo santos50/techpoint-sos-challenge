@@ -4,9 +4,7 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
-
-
-const jwt = require("jsonwebtoken");
+import {DropdownButton, Dropdown} from 'react-bootstrap'
 
 
 class AdminMain extends Component {
@@ -18,6 +16,7 @@ class AdminMain extends Component {
         this.onChangeQuestion = this.onChangeQuestion.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
        this.onPost = this.onPost.bind(this);
+       this.onEndGame = this.onEndGame.bind(this);
 
         this.state = {
             question: '',
@@ -29,6 +28,23 @@ class AdminMain extends Component {
       
         
       }
+
+onEndGame() {
+  axios.post('/endGame')
+    .then(res => {
+      //success
+      this.setState({
+        question: '',
+        answers: [],
+        rightAnswer: 0,
+        posted: false,
+    });
+      this.forceUpdate();
+    })
+    .catch(res => {
+        console.log(res);
+  });
+}
 
 addAnswer() {
     this.setState({answers: [...this.state.answers, ""]})
@@ -108,9 +124,6 @@ onActivate() {
 }
 
 render() {
-  const j = localStorage.getItem('jwtToken'); 
-    var payload = jwt.verify(j, "randomString");
-    //{payload.user.id}
 
 
 return (
@@ -144,8 +157,14 @@ return (
                             {this.state.posted?   <input type="radio" checked={this.state.rightAnswer === index}  onChange={(e)=>this.handleChange(e, index)} value={answer}/>
                             : <div></div>}
                             <input onChange={(e)=>this.handleChange(e, index)}
-                            value={answer}/>
+                            value={answer}/> 
+
                             <button type="button" onClick ={()=> this.removeAnswer(index)} >X</button>
+                            <DropdownButton direction="right" size="sm" title="Points">
+  <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+  <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+  <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+</DropdownButton>
                         </div>
 
                     )
@@ -158,13 +177,14 @@ return (
 
             {this.state.posted? <button type="submit" className="btn btn-primary btn-block">Post Right Answer</button> 
             : <div></div>}
-
-
             
             </form>
 
             </div>
       </div>
+
+      <button className="btn btn-primary btn-block" type="button" onClick={(e)=> this.onEndGame(e)}>End Game</button>
+
      </div>
     );
   }

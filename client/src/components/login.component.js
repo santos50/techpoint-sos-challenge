@@ -36,18 +36,11 @@ class Login extends Component {
       }
 
 
-      // static getDerivedStateFromProps(nextProps, prevState) {
-      //   if (nextProps.total !== prevState.total) {
-      //     return ({ total: nextProps.total }) // <- this is setState equivalent
-      //   }
-      //   return null
-      // }
-
       componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
           this.props.history.push("/home"); // push user to dashboard when they login
         }
-    if (nextProps.errors) {
+        if (nextProps.errors) {
           this.setState({
             errors: nextProps.errors
           });
@@ -91,7 +84,6 @@ class Login extends Component {
 
 
     render() {
-      const { errors } = this.state;
 
         return (
           <div className = "Main">
@@ -139,12 +131,10 @@ class Login extends Component {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
 });
 
 export default connect(

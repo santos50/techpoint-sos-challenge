@@ -9,11 +9,21 @@ import "../playerMain.css";
 import coltsLogo from '../images/indianapolis-colts-logo.png';
 import texansLogo from '../images/houston-texans-logo.png';
 import possession from '../images/possession-football.png';
+import UIfx from 'uifx'
+import whistleAudio from '../images/whistle.m4a';
 
 
 
 const jwt = require("jsonwebtoken");
-var index = 0;
+
+const audio = new UIfx(
+    whistleAudio,
+    {
+      volume: 0.4, // number between 0.0 ~ 1.0
+      throttleMs: 100
+    }
+  )
+   
 
 class PlayerMain extends Component {
 
@@ -39,6 +49,7 @@ class PlayerMain extends Component {
             gameData: GameData,
             tweets: [],
             tweetsCheckIndex: 0,
+            playAudio: true,
 
         }
       
@@ -67,6 +78,10 @@ getItems = () => {
     axios.post('/getPlayerQuestions')
     .then(response => { 
       //  console.log(response.data);
+        if (response.data.expired) {
+             this.props.history.push("/home");
+        }
+      
         const data = response.data.questions;
 
     
@@ -101,7 +116,7 @@ getItems = () => {
                     this.setState({userAnswerIndex: undefined, userAnwer: ''});
                 }
 
-                    this.setState({waiting: false})
+                    this.setState({waiting: false, playAudio: true})
                  }
                  
     })
@@ -116,11 +131,16 @@ getItems = () => {
             this.setState({tweets: response.data, firstTweets: false, tweetsCheckIndex: response.data.length})
         }
 
+        console.log('index ', this.state.tweets.length - this.state.tweetsCheckIndex)
         if (response.data[0].id != this.state.tweets[this.state.tweets.length - this.state.tweetsCheckIndex].id) {
             var newTweets = this.state.tweets.concat(response.data);
             this.setState( {
                 tweets: newTweets,
             });
+
+            console.log(response.data)
+            console.log(this.state.tweets)
+
             this.setState({tweetsCheckIndex: response.data.length})
         }
        
@@ -140,11 +160,17 @@ displayItems = (question, answers) => {
    if (question[this.state.currentQuestion]==undefined) {
        return <h2>waiting on question</h2>
    } 
+
+
+   if (this.state.playAudio) {
+        audio.play();
+        this.setState({playAudio: false})
+   }
+
     return  <div>
         <h3>
             {question[this.state.currentQuestion]}
             <br></br>
-
             {this.state.answers[this.state.currentQuestion].map((answer, num) => 
             <div key={num}>
                 <button type="submit" style={{ padding: "3"}} onClick ={(e)=> this.onClick(e, num)}>{answer}</button>
@@ -245,13 +271,15 @@ return (
 
             {this.state.waiting? <h3>Waiting for right answer...</h3>
             : <div></div>}
+
+            
             </div>
 
 
 
         {/* Section 2: Top right area with the current game score and potentially for the game's top scorers */}
             <div className="sidebar">
-            <table width={100}>
+            <td width={100}>
                 <tr>
                 <h3>Current Score:</h3>
 
@@ -276,7 +304,7 @@ return (
                     <h2>Game top Scorers</h2> 
                 {/* <h3>{this.displayTopScorers()}</h3>*/}
                 </tr>
-                </table>
+                </td>
             </div>
 
         

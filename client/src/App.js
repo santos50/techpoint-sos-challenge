@@ -1,8 +1,8 @@
-import React, { useEffect, Component } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import './index.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import jwt_decode from "jwt-decode";
@@ -10,7 +10,6 @@ import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
 import PrivateRoute from "./components/private-route/PrivateRoute";
-import AdminPrivateRoute from "./components/private-route/AdminPrivateRoute";
 
 import Login from "./components/login.component";
 import Logout from "./components/logout.component";
@@ -68,7 +67,7 @@ export default class App extends Component {
     
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-          <Link className="navbar-brand"to={"/sign-in"}><h3>Whistle&nbsp;<img width={54} height={30} src={logo}/></h3></Link>
+          <Link className="navbar-brand"to={"/sign-in"}><h3>Whistle&nbsp;<img alt="logo"width={54} height={30} src={logo}/></h3></Link>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">

@@ -16,6 +16,26 @@ const T = new Twit ({
 
 var stream = T.stream('statuses/filter', {track: '#IndianapolisColts'})
 
+router.post("/endGame", async (req, res) => {
+  //fetch game
+  let game = await db.Game.find().sort({_id:-1}).limit(1)
+
+  //update game in database with new question/answer
+  db.Game.findOneAndUpdate(
+    { _id: game[0]._id }, 
+    { $set: { questions: [], answers: [], rightAnswers: [], currentQuestion: 0, expired: true } },
+   function (error, success) {
+         if (error) {
+          return res.status(400).json({
+            message: "Not able to post question"
+          });
+         } else {
+           //success
+        //   console.log('in success')
+          return res.status(200).json();
+         }
+     });
+}) 
 
 router.get("/example", (req, res) => {
     res.send("message from backend: success");
@@ -26,7 +46,7 @@ router.post('/getTweets', (req,res) => {
   // console.log('tweets')
 
   var params = {
-    q: '#colts',
+    q: '#blm',
     count: 5,
     result_type: 'recent',
     lang: 'en'
