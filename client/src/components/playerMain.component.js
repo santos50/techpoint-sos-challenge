@@ -148,6 +148,7 @@ getItems = () => {
     axios.post('/getTweets')
     .then(response => {
 
+        console.log(response.data)
         if (this.state.firstTweets) {
             this.setState({tweets: response.data, firstTweets: false, tweetsCheckIndex: response.data.length})
         }
