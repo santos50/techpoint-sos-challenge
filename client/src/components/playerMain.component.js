@@ -18,6 +18,8 @@ const item = localStorage.getItem('jwtToken');
 sessionStorage.setItem(item, 0);
 var sessionScore = parseInt(sessionStorage.getItem(item));
 var photoIndex = 0;
+var gameDataIndex = 0;
+var gameDataTimer = 0;
 
 
 
@@ -67,12 +69,7 @@ class PlayerMain extends Component {
         
       }
 async componentDidMount() {
-   // index++;
-  // console.log(this.state.gameData[0].play);
-  console.log(this.state.currentQuestion);
     this.getItems();
-    //this.getTopScorers();
-    
 }
 
 
@@ -107,7 +104,7 @@ getItems = () => {
         });
 
 
-        if (data != undefined) {
+        if (data !== undefined) {
             this.setState({question: data})
            // console.log(this.state.question)
         }
@@ -116,10 +113,10 @@ getItems = () => {
 
                  // call getData() again in 5 seconds
               //console.log('currentQuestion ', this.state.currentQuestion)
-                 if (this.state.rightAnswer != undefined)
+                 if (this.state.rightAnswer !== undefined)
                  if (this.state.rightAnswer.length >= this.state.question.length) {
-                     if (this.state.userAnswerIndex != undefined) {
-                    if (this.state.rightAnswer[this.state.currentQuestion-1] == this.state.userAnswerIndex) {
+                     if (this.state.userAnswerIndex !== undefined) {
+                    if (this.state.rightAnswer[this.state.currentQuestion-1] === this.state.userAnswerIndex) {
 
                         //console.log(this.state.rightAnswer[this.state.currentQuestion-1])
                        // console.log(this.state.userAnswerIndex)
@@ -148,20 +145,15 @@ getItems = () => {
     axios.post('/getTweets')
     .then(response => {
 
-        console.log(response.data)
         if (this.state.firstTweets) {
             this.setState({tweets: response.data, firstTweets: false, tweetsCheckIndex: response.data.length})
         }
 
-        console.log('index ', this.state.tweets.length - this.state.tweetsCheckIndex)
-        if (response.data[0].id != this.state.tweets[this.state.tweets.length - this.state.tweetsCheckIndex].id) {
+        if (response.data[0].id !== this.state.tweets[this.state.tweets.length - this.state.tweetsCheckIndex].id) {
             var newTweets = this.state.tweets.concat(response.data);
             this.setState( {
                 tweets: newTweets,
             });
-
-            console.log(response.data)
-            console.log(this.state.tweets)
 
             this.setState({tweetsCheckIndex: response.data.length})
         }
@@ -179,6 +171,17 @@ getItems = () => {
         photoIndex+=4;
     }
 
+    gameDataTimer++;
+
+    if (gameDataTimer === 7) {
+        gameDataTimer = 0;
+        gameDataIndex++;
+    }
+
+    if (gameDataIndex>= this.state.gameData.length) {
+        gameDataIndex = this.state.gameData.length - 1;
+    } 
+
     this.intervalID = setTimeout(this.getItems.bind(this), 5000);
 }
 
@@ -187,7 +190,7 @@ displayItems = (question, answers) => {
     // console.log(currentQuestion)
    // this.setState({question: this.state.question});
 
-   if (!this.state.expired && question[this.state.currentQuestion]==undefined) {
+   if (!this.state.expired && question[this.state.currentQuestion]===undefined) {
        return <h2>waiting on question</h2>
    } else if (this.state.expired) {
 
@@ -195,7 +198,7 @@ displayItems = (question, answers) => {
 
     var flag = false;
     for (var i = 0; i < this.state.topScorers.length; i++) {
-        if (this.state.topScorers[i].username == user.user.id) {
+        if (this.state.topScorers[i].username === user.user.id) {
           flag = true;
         }
       }
@@ -206,7 +209,7 @@ displayItems = (question, answers) => {
                 <div>
             <h2 className="regularText">No current game in progress!</h2>
             <br/>
-            <h1 style={{textAlign:"center"}}>Congrats, {user.user.id}! You won today's game prize 🎉🥳 </h1>
+            <h1 style={{textAlign:"center"}}>Congrats, {user.user.id}! You won today's game prize <span role="img" aria-label="party">🎉🥳</span> </h1>
             </div>
             )
        } else {
@@ -214,7 +217,7 @@ displayItems = (question, answers) => {
             <div>
             <h2 className="regularText">No current game in progress!</h2> 
             <br/>   
-            <h1 style={{textAlign:"center"}}>Sorry, you were not a top Whistler today! 😔 But hope you enjoyed the game! 🏈</h1>
+            <h1 style={{textAlign:"center"}}>Sorry, you were not a top Whistler today! <span role="img" aria-label="sad">😔</span> But hope you enjoyed the game! <span role="img" aria-label="football">🏈</span></h1>
             </div>
             )
        }
@@ -317,15 +320,16 @@ return (
         {/* Section 1: The area of the top left where the questions and answers are shown for the player */}
         <div className="main-content">  
         <h3 className="regularText" style={{fontSize:"15pt"}}>Whistle Fans</h3>
-        <div class="row">
-            {this.state.photos.map((photo, index) =>{
+        <div className="row">
+            {this.state.photos.map((photo, index) => {
                 if (index < photoIndex && index >= photoIndex - 4) {
                         return (
-                            <div class="column">
+                            <div key={index} className="column">
                             <img width={100} height={100} src={photo.image_url} alt="fan" ></img>
                         </div>
-                        )
-                }  
+                        )}  else {
+                            return <div key={index}></div>
+                        } 
                     })}
         </div>
         <br/>
@@ -354,39 +358,38 @@ return (
 
         {/* Section 2: Top right area with the current game score and potentially for the game's top scorers */}
             <div className="sidebar">
-            <td width={100}>
-                <tr>
-                <h3 className="regularText" style={{fontSize:"15pt", background:"white"}}>Game Score</h3>
+            <div className="sideTable">
+            <h3 className="regularText" style={{fontSize:"15pt", background:"white"}}>Game Score</h3>
+                
 
                 <div className="wrapper">
-                    <div className="one"><img className="profilePicture" width={78} height={60} src={coltsLogo}></img></div>
-                    <div className="two"><h3>7</h3></div>
-                    <div className="three"><img className="profilePicture" width={80} height={60} src={ramsLogo}></img></div>
-                    <div className="four"><h3>0</h3></div>
+                    <div className="one"><img className="profilePicture" width={78} height={60} src={coltsLogo} alt="score"></img></div>
+                    <div className="two"><h3>{this.state.gameData[gameDataIndex]["colts-points"]}</h3></div>
+                    <div className="three"><img className="profilePicture" width={80} height={60} src={ramsLogo}alt="score"></img></div>
+                    <div className="four"><h3>{this.state.gameData[gameDataIndex]["texans-points"]}</h3></div>
                     <div className="five"></div>
-                    <div className="six"><img className="profilePicture" width={45} height={40} src={possession}></img></div>
+                    <div className="six"><img className="profilePicture" width={45} height={40} src={possession}alt="score"></img></div>
                 </div>
 
                 <br/>
 
                 <div>
-                    <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[4].time}</h4>
-                    <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[3].yards}</h4>
+                    <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[gameDataIndex].time}</h4>
+                    <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[gameDataIndex].yards}</h4>
                 </div>
                 <hr/>
             
-                </tr>
-                <tr>
+                
+                
                 <h4 style={{fontSize:"15pt", background:"white"}} className="regularText">Whistle Leaderboard</h4>
                 <h3>{this.displayTopScorers()}</h3>
-                </tr>
+              
 
                 <hr/>
-                <tr>
+              
                 <h4 style={{fontSize:"15pt", background:"white"}} className="regularText">Today's Prize: Two Tickets for Colts @ 49ers 8/25/2021</h4>
-                </tr>
-
-                </td>
+              
+                </div>
                 
             </div>
 
@@ -395,12 +398,19 @@ return (
         <div className = "twin">
                 <h3 style={{background:"white"}}className="regularText">Game Updates:</h3>
                 <div className="scrollable">
-                    {this.state.gameData.slice(0).reverse().map((data, index) =>{
+                    {this.state.gameData.map((data, index) =>{
+                        if (index <= gameDataIndex) {
                         return (
-                        <div>
+                        <div key={index}>
                             {data.play}  
                             <hr/>
                         </div>)
+                        } else {
+                            return (
+                                <div key={index}> </div>
+                            )
+                        }
+
                     })}
                 </div>
         </div>
@@ -413,8 +423,8 @@ return (
                 
                 <div className="scrollable">
                     {this.state.tweets.slice(0).reverse().map((data, index) =>{
-                        return <div className = "tweet">
-                        <img className="profilePicture" src={data.user.profile_image_url_https}></img>
+                        return <div key={index} className = "tweet">
+                        <img className="profilePicture" src={data.user.profile_image_url_https} alt="tweets"></img>
                         <b> &nbsp; {data.user.name} &nbsp;@{data.user.screen_name}</b>
                         <p>{data.text} </p>
                          <hr/>

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
-import axios from 'axios';
 import GameData from '../mockGameData/mockGameUpdates.json';
 import "../playerMain.css";
 import coltsLogo from '../images/indianapolis-colts-logo.png';

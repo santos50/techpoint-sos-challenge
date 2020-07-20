@@ -10,7 +10,6 @@ import logo from '../images/whistle-main.png';
 window.currQuestion = 0;
 window.start = false;
 sessionStorage.setItem('currentQuestion', 0);
-const jwt = require("jsonwebtoken");
 
 
 

@@ -34,6 +34,7 @@ class AdminMain extends Component {
         
       }
 
+
 onEndGame() {
   axios.post('/endGame')
     .then(res => {
@@ -78,7 +79,7 @@ handlePointsChange(e,index) {
 }
 
 onChangeQuestion(e) {
-  if (this.state.question=='' && this.state.dropDown != '') {
+  if (this.state.question === '' && this.state.dropDown !== '') {
     this.setState({
       question: this.state.dropDown
     })

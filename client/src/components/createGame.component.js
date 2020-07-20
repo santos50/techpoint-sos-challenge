@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
-import GameData from '../mockGameData/mockGameUpdates.json';
 import "../playerMain.css";
 import "../playerMain.css";
 import logo from '../images/whistle-main.png';

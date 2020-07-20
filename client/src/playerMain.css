@@ -141,6 +141,15 @@ table, th, td {
   }
 
 
+  .sideTable {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: rgb(99, 108, 117);
+    border-radius: 10pt;
+    padding: 5px;
+    text-align: left; 
+  }
+
   .quizButtons {
     color: #fff;
     background-color: #3b5869;
