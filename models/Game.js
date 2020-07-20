@@ -7,7 +7,6 @@ const GameSchema = new Schema ({
         trim: true,
         minLength: 4,
         required: true,
-        unique: true,
         default: "Game Session"
     },
     admin: {

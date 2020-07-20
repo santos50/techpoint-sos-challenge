@@ -45,7 +45,7 @@ onEndGame() {
         posted: false,
     });
     sessionStorage.setItem("currentQuestion", 0);
-      this.forceUpdate();
+      this.props.history.push('/createGame')
     })
     .catch(res => {
         console.log(res);

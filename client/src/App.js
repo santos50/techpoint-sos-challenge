@@ -20,6 +20,7 @@ import PlayerMain from "./components/playerMain.component";
 import PlayerMainEdit from "./components/playerMainEdit.component";
 import HomePlayerMain from "./components/homePlayerMain.component";
 import CreateGame from "./components/createGame.component";
+import GameEnd from "./components/gameEnd.component";
 
 import logo from './images/whistle-main.png';
 
@@ -96,6 +97,7 @@ export default class App extends Component {
             <PrivateRoute exact path="/createGame" component={CreateGame} />
             <PrivateRoute exact path="/playerMain" component={PlayerMain} />
             <PrivateRoute exact path="/homePlayerMain" component={HomePlayerMain} />
+            <PrivateRoute exact path="/gameEnd" component={GameEnd} />
           </Switch>
         {/* </div>
       </div> */}

@@ -18,8 +18,8 @@ class CreateGame extends Component {
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onChangeTitle = this.onChangeTitle.bind(this);
-        this.onChangeHashtag = this.onChangeHashtag.bind(this);
-        this.onContinue = this.onContinue.bind(this);
+        // this.onChangeHashtag = this.onChangeHashtag.bind(this);
+        // this.onContinue = this.onContinue.bind(this);
         
         
         this.state = {
@@ -36,17 +36,17 @@ class CreateGame extends Component {
         })
       }
 
-      onChangeHashtag(e) {
-        this.setState({
-          hashtag: e.target.value
-        })
-      }
+    //   onChangeHashtag(e) {
+    //     this.setState({
+    //       hashtag: e.target.value
+    //     })
+    //   }
 
-      onContinue() {
-         this.props.history.push("/adminMain");
+    //   onContinue() {
+    //      this.props.history.push("/adminMain");
      
      
-       }
+    //    }
 
       onSubmit(e) {
         e.preventDefault();
@@ -55,15 +55,8 @@ class CreateGame extends Component {
 
         const game = {
           title: this.state.title,
-          hashtag: this.state.hashtag,
           admin: payload.user.id,
           currentQuestion: 0,
-        //   password: 'pacers',
-        //   questions: [],
-        //   answers: [],
-        //   rightAnswers: [],
-        //   questionPointValues: [],
-        //   expired: false,
         }
 
         axios.post('/addGame', game)
@@ -86,6 +79,7 @@ return (
         <div className="auth-inner">
             <form onSubmit={this.onSubmit}>
 
+            <h3 className="regularText">No Active Game! </h3>
             <h3>Create a Game Session</h3>
             <h3><img border-radius={50} width={135} height={75} alt="" src={logo}/></h3>
 
@@ -94,13 +88,13 @@ return (
                     <input type="text" className="form-control" placeholder="Game title" value={this.state.title} onChange={this.onChangeTitle}/>
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label>Hashtag</label>
                     <input type="text" className="form-control" placeholder="#Hashtag" value={this.state.hashtag} onChange={this.onChangeHashtag}/>
-                </div>
+                </div> */}
 
                 <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                <button onClick={this.onContinue} type="button" className="btn btn-primary btn-block">Go to Current Game</button>
+                {/* <button onClick={this.onContinue} type="button" className="btn btn-primary btn-block">Go to Current Game</button> */}
             </form>
           </div>
           </div>

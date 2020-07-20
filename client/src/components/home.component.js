@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser} from "../actions/authActions";
+import { logoutUser,setUserAdmin } from "../actions/authActions";
 import axios from 'axios';
 
 const jwt = require("jsonwebtoken");
@@ -73,7 +73,14 @@ class Home extends Component {
           .then(res => {
             //success, they are an admin
             window.currQuestion = 0;
-            this.props.history.push("/adminMain");
+
+            //if game is expired
+            
+            if (res.data) {
+              this.props.history.push("/createGame");
+            } else {
+              this.props.history.push("/adminMain");
+            }
               
           })
           .catch(res => {

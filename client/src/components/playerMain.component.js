@@ -13,8 +13,6 @@ import UIfx from 'uifx'
 import whistleAudio from '../images/whistle.m4a';
 import photos from '../mockGameData/mockProfilePhotos.json';
 
-
-
 const jwt = require("jsonwebtoken");
 const item = localStorage.getItem('jwtToken');
 sessionStorage.setItem(item, 0);
@@ -62,6 +60,7 @@ class PlayerMain extends Component {
             color: '',
             answerPointValues: [[]],
             photos: photos,
+            expired: false,
 
         }
       
@@ -91,7 +90,8 @@ getItems = () => {
     .then(response => { 
       //  console.log(response.data);
         if (response.data.expired) {
-             this.props.history.push("/home");
+            
+             this.setState({expired:true})
         }
       
         const data = response.data.questions;
@@ -187,9 +187,38 @@ displayItems = (question, answers) => {
     // console.log(currentQuestion)
    // this.setState({question: this.state.question});
 
-   if (question[this.state.currentQuestion]==undefined) {
+   if (!this.state.expired && question[this.state.currentQuestion]==undefined) {
        return <h2>waiting on question</h2>
-   } 
+   } else if (this.state.expired) {
+
+    const { user } = this.props.auth;
+
+    var flag = false;
+    for (var i = 0; i < this.state.topScorers.length; i++) {
+        if (this.state.topScorers[i].username == user.user.id) {
+          flag = true;
+        }
+      }
+
+
+       if (flag) {
+            return (
+                <div>
+            <h2 className="regularText">No current game in progress!</h2>
+            <br/>
+            <h1 style={{textAlign:"center"}}>Congrats, {user.user.id}! You won today's game prize 🎉🥳 </h1>
+            </div>
+            )
+       } else {
+            return(
+            <div>
+            <h2 className="regularText">No current game in progress!</h2> 
+            <br/>   
+            <h1 style={{textAlign:"center"}}>Sorry, you were not a top Whistler today! 😔 But hope you enjoyed the game! 🏈</h1>
+            </div>
+            )
+       }
+   }
 
 
    if (this.state.playAudio) {
@@ -366,7 +395,7 @@ return (
         <div className = "twin">
                 <h3 style={{background:"white"}}className="regularText">Game Updates:</h3>
                 <div className="scrollable">
-                    {this.state.gameData.map((data, index) =>{
+                    {this.state.gameData.slice(0).reverse().map((data, index) =>{
                         return (
                         <div>
                             {data.play}  
@@ -383,7 +412,7 @@ return (
             <h3 className="regularText"style={{background:"white"}}>Live Tweets #colts</h3>
                 
                 <div className="scrollable">
-                    {this.state.tweets.map((data, index) =>{
+                    {this.state.tweets.slice(0).reverse().map((data, index) =>{
                         return <div className = "tweet">
                         <img className="profilePicture" src={data.user.profile_image_url_https}></img>
                         <b> &nbsp; {data.user.name} &nbsp;@{data.user.screen_name}</b>

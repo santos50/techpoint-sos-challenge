@@ -83,11 +83,10 @@ router.post("/getCurrentQuestion", async (req, res) => {
 
 
 router.post("/addGame", (req, res) => {
-  const { title, hashtag, admin, currentQuestion } = req.body;
+  const { title, admin, currentQuestion } = req.body;
 
   db.Game.create({
           title,
-          hashtag,
           admin,
           currentQuestion,
           // password,
@@ -259,7 +258,7 @@ router.post("/userLocation",async (req, res) => {
           {
               returnNewDocument: true
           });
-          return res.status(200).json();
+          return res.send(game[0].expired);
         }
 
       } catch (e) {
