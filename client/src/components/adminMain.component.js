@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
-import {DropdownButton, Dropdown} from 'react-bootstrap'
+
 
 var sessionCurrentQuestion = parseInt(sessionStorage.getItem("currentQuestion"));
 
@@ -15,6 +15,7 @@ class AdminMain extends Component {
         super(props);
 
         this.onChangeQuestion = this.onChangeQuestion.bind(this);
+        this.handleDropDownChange = this.handleDropDownChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
        this.onPost = this.onPost.bind(this);
        this.onEndGame = this.onEndGame.bind(this);
@@ -25,7 +26,9 @@ class AdminMain extends Component {
             rightAnswer: 0,
             started: false,
             posted: false,
-            points: 'Points'
+            points: [],
+            answerPointValues:[],
+            dropDown:'',
         }
       
         
@@ -50,34 +53,49 @@ onEndGame() {
 }
 
 addAnswer() {
-    this.setState({answers: [...this.state.answers, ""]})
+    this.setState({answers: [...this.state.answers, ""], answerPointValues: [...this.state.answerPointValues, ""]})
 }
 
 removeAnswer(index) {
     this.state.answers.splice(index, 1)
-    this.setState({answers: this.state.answers})
+    this.state.answerPointValues.splice(index, 1)
+    this.setState({answers: this.state.answers, answerPointValues: this.state.answerPointValues})
+
 }
 
 handleChange(e, index) {
     this.state.answers[index] = e.target.value;
-    this.setState({answers: this.state.answers})
-    this.setState({rightAnswer: index});
+    
+    this.setState({answers: this.state.answers, rightAnswer:index})
+    // this.setState({rightAnswer: index});
+
+}
+
+handlePointsChange(e,index) {
+  this.state.answerPointValues[index] = e.target.value;
+  this.setState({answerPointValues:this.state.answerPointValues})
 
 }
 
 onChangeQuestion(e) {
+  if (this.state.question=='' && this.state.dropDown != '') {
+    this.setState({
+      question: this.state.dropDown
+    })
+  } else {
     this.setState({
       question: e.target.value
     })
+  }
   }
 
 onPost(e) {
     e.preventDefault();
 
-    console.log(this.state.question)
     const gamePost = {
       question: this.state.question,
       answers: this.state.answers,
+      answerPointValues: this.state.answerPointValues,
     }
    
     axios.post('/postQuestion', gamePost)
@@ -115,6 +133,8 @@ onSubmit(e) {
         answers: [],
         rightAnswer: 0,
         posted: false,
+        answerPointValues: '',
+        dropDown: '',
     });
       this.forceUpdate();
     })
@@ -128,6 +148,11 @@ onActivate() {
   window.currQuestion = 0;
 }
 
+handleDropDownChange(e) {
+  this.setState({dropDown: e.target.value,});
+this.onChangeQuestion(e)
+}
+
 render() {
 
 
@@ -139,21 +164,27 @@ return (
 
 
 <h1>Create Question {sessionCurrentQuestion + 1}</h1>
+
 {/* <h2 style={{postion: "right"}}>{window.currQuestion}</h2> */}
+
         <form onSubmit={this.onSubmit}>
         <div className="form-group">
-                    <label>Question</label>
+                    <label>Type a Question</label>
                     <input type="text" className="form-control" placeholder="Enter question"  value={this.state.question} onChange={this.onChangeQuestion}/>
-                     <div style={{ fontsize: 12, color: "red"}}>
-                        {this.state.passwordError}
-                    </div> 
+
+                    <p className="forgot-password text-center">Or Select from Pre-Existing Questions</p>
+
+                    <select className="form-control" name="None" onChange={this.handleDropDownChange} value={this.state.dropDown}>
+                                <option selected value={""}>None</option>
+                                <option value={"Who will win kickoff?"}>Who will win kickoff?</option>
+                                <option value={"What do you think the next play will be?"}>What do you think the next play will be?</option>
+                                <option value={"Will the next play be a touchdown?"}>Will the next play be a touchdown?</option>
+                                <option value={"Will they get a first down?"}>Will they get a first down?</option>
+                            </select>
             </div>
 
 
-            {this.state.posted?  <label>Answers (Choose correct answer after play)</label> : <label>Answers</label>}
-
-
-
+            {this.state.posted?  <label>Answers (Choose correct answer after play)</label> : <label>Answers and Point Values</label>}
             {
                 this.state.answers.map((answer, index) => {
                     return (
@@ -165,12 +196,13 @@ return (
                             value={answer}/> 
 
                             <button type="button" onClick ={()=> this.removeAnswer(index)} >X</button>
-                            <DropdownButton direction="right"  width= "50" size="sm" title="Points" >
-                                <Dropdown.Item>1</Dropdown.Item>
-                                <Dropdown.Item>5</Dropdown.Item>
-                                <Dropdown.Item >7</Dropdown.Item>
-                                <Dropdown.Item >10</Dropdown.Item>
-                            </DropdownButton>
+                            <select onChange={(e)=>this.handlePointsChange(e, index)} value={this.state.answerPointValues[index]} title={this.state.answerPointValues[index]}>
+                                <option value={0}></option>
+                                <option value={1}>1</option>
+                                <option value={5}>5</option>
+                                <option value={7}>7</option>
+                                <option value={10}>10</option>
+                            </select>
                         <br/>
                         </div>
 

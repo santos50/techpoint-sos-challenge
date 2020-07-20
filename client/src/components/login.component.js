@@ -26,7 +26,8 @@ class Login extends Component {
           username: '',
           password: '',
           passwordError: '',
-          isSuccess: false,
+          isSuccess: true,
+          color: 'black'
         }
       }
     
@@ -79,11 +80,30 @@ class Login extends Component {
 
         this.props.loginUser(user);
        
-              this.setState({
-                username: '',
-                password: '',
-                passwordError: "incorrect password",
-              })
+        this.setState({
+            username: '',
+            password: '',
+            isSuccess: false,
+            passwordError: "incorrect password",
+            color: 'red'
+        })
+
+      //  if (!this.props.auth.isAuthenticated) {
+      //         this.setState({
+      //           username: '',
+      //           password: '',
+      //           isSuccess: false,
+      //           passwordError: "incorrect password",
+      //           color: 'red'
+      //         })
+      //       }
+      //       else {
+      //         this.setState({
+      //           isSuccess: false,
+      //           passwordError: 'Logging in',
+      //           color: 'green'
+      //         })
+      //       }
       }
 
 
@@ -107,17 +127,11 @@ class Login extends Component {
                 <div className="form-group">
                     <label>Password</label>
                     <input type="password" className="form-control" placeholder="Enter password"  value={this.state.password} onChange={this.onChangePassword}/>
-                     <div style={{ fontsize: 12, color: "red"}}>
+                    
+                    {/* {this.state.isSuccess? <div></div>:<div style={{ fontsize: 12, color: this.state.color}}>
                         {this.state.passwordError}
-                    </div> 
+                    </div> } */}
                 </div>
-
-                {/* <div className="form-group">
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                    </div>
-                </div> */}
 
                 <button type="submit" className="btn btn-primary btn-block">Submit</button>
                 <p className="forgot-password text-right">

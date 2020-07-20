@@ -36,7 +36,7 @@ const GameSchema = new Schema ({
         default: undefined,
         required: false,
     },
-    questionsPointValues: {
+    answerPointValues: {
         type: [[Number]],
         default: undefined,
         required: false,

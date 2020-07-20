@@ -110,7 +110,7 @@ var leaderboard = db.User.find( {score: {$exists: true}} ).sort({score : -1}).li
 });
 
 router.post("/postQuestion", async (req, res) => {
-  const { question, answers } = req.body;
+  const { question, answers, answerPointValues } = req.body;
 
   //fetch game
   let game = await db.Game.find().sort({_id:-1}).limit(1)
@@ -118,7 +118,7 @@ router.post("/postQuestion", async (req, res) => {
   //update game in database with new question/answer
   db.Game.findOneAndUpdate(
     { _id: game[0]._id }, 
-    { $push: { questions: question, answers: answers } },
+    { $push: { questions: question, answers: answers, answerPointValues: answerPointValues } },
    function (error, success) {
          if (error) {
           return res.status(400).json({

@@ -59,6 +59,7 @@ class PlayerMain extends Component {
             isCorrectAnswer: false,
             correctAnswerText: '',
             color: '',
+            answerPointValues: [[]],
 
         }
       
@@ -100,6 +101,7 @@ getItems = () => {
             title: response.data.title,
             currentQuestion: response.data.currentQuestion,
             rightAnswer: response.data.rightAnswers,
+            answerPointValues: response.data.answerPointValues,
         });
 
 
@@ -119,7 +121,8 @@ getItems = () => {
 
                         //console.log(this.state.rightAnswer[this.state.currentQuestion-1])
                        // console.log(this.state.userAnswerIndex)
-                       sessionScore += 5;
+                       var addPoints = this.state.answerPointValues[this.state.currentQuestion-1][this.state.userAnswerIndex];
+                       sessionScore += addPoints;
 
                        sessionStorage.setItem(item, sessionScore);
 
@@ -191,7 +194,7 @@ displayItems = (question, answers) => {
             <br></br>
             {this.state.answers[this.state.currentQuestion].map((answer, num) => 
             <div key={num}>
-                <button type="submit" style={{ padding: "3"}} onClick ={(e)=> this.onClick(e, num)}>{answer}</button>
+                <button type="submit" style={{ padding: "3"}} onClick ={(e)=> this.onClick(e, num)}>{answer} &nbsp;+{this.state.answerPointValues[this.state.currentQuestion][num]}</button> 
             </div> 
             )
             }
