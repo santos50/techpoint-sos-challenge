@@ -7,11 +7,11 @@ import axios from 'axios';
 import GameData from '../mockGameData/mockGameUpdates.json';
 import "../playerMain.css";
 import coltsLogo from '../images/indianapolis-colts-logo.png';
-import texansLogo from '../images/houston-texans-logo.png';
+import ramsLogo from '../images/los-angeles-rams-logo.png';
 import possession from '../images/possession-football.png';
 import UIfx from 'uifx'
 import whistleAudio from '../images/whistle.m4a';
-import { session } from "passport";
+import photos from '../mockGameData/mockProfilePhotos.json';
 
 
 
@@ -19,6 +19,7 @@ const jwt = require("jsonwebtoken");
 const item = localStorage.getItem('jwtToken');
 sessionStorage.setItem(item, 0);
 var sessionScore = parseInt(sessionStorage.getItem(item));
+var photoIndex = 0;
 
 
 
@@ -60,6 +61,7 @@ class PlayerMain extends Component {
             correctAnswerText: '',
             color: '',
             answerPointValues: [[]],
+            photos: photos,
 
         }
       
@@ -170,6 +172,12 @@ getItems = () => {
 
     this.setState({isCorrectAnswer: false})
 
+    if (photoIndex>= this.state.photos.length) {
+        photoIndex = 4;
+    } else {
+        photoIndex+=4;
+    }
+
     this.intervalID = setTimeout(this.getItems.bind(this), 5000);
 }
 
@@ -190,11 +198,12 @@ displayItems = (question, answers) => {
 
     return  <div>
         <h3>
-            {question[this.state.currentQuestion]}
-            <br></br>
+            <b><h2>{question[this.state.currentQuestion]}</h2></b>
+            <hr/>
+            <br/>
             {this.state.answers[this.state.currentQuestion].map((answer, num) => 
             <div key={num}>
-                <button type="submit" style={{ padding: "3"}} onClick ={(e)=> this.onClick(e, num)}>{answer} &nbsp;+{this.state.answerPointValues[this.state.currentQuestion][num]}</button> 
+                <button className="quizButtons" type="submit" style={{ padding: "3"}} onClick ={(e)=> this.onClick(e, num)}>{answer} &nbsp;+{this.state.answerPointValues[this.state.currentQuestion][num]}</button> 
             </div> 
             )
             }
@@ -255,11 +264,10 @@ getTopScorers() {
 displayTopScorers() {
     return ( <div>
     <h3>
-        <br></br>
 
         {this.state.topScorers.map((scorers, index) => 
         <div key={index}>
-            <h3>{scorers.username}: {scorers.score}</h3>
+            <h3 style={{fontSize:"15pt", textAlign:"justify"}} className="regularText">{scorers.username} &nbsp;&nbsp;</h3><div className="progress" style={{width:scorers.score}}></div>
         </div> 
         )
         }
@@ -268,33 +276,45 @@ displayTopScorers() {
 }
 
 render() {
-  const j = localStorage.getItem('jwtToken'); 
-    var payload = jwt.verify(j, "randomString");
+    const { user } = this.props.auth;
 
 return (
 
 <div className = "playerHome">
+    
     <div className="grid">
-
-
 
         {/* Section 1: The area of the top left where the questions and answers are shown for the player */}
         <div className="main-content">  
-            <h1 style={{color:"blue"}}>{this.state.title}</h1>
-            <h4>score: {sessionScore}</h4>
+        <h3 className="regularText" style={{fontSize:"15pt"}}>Whistle Fans</h3>
+        <div class="row">
+            {this.state.photos.map((photo, index) =>{
+                if (index < photoIndex && index >= photoIndex - 4) {
+                        return (
+                            <div class="column">
+                            <img width={100} height={100} src={photo.image_url} alt="fan" ></img>
+                        </div>
+                        )
+                }  
+                    })}
+        </div>
+        <br/>
+
+
+            <h1 className="titleName">{this.state.title}</h1>
+            <h4 className="regularText">{user.user.id}'s score: {sessionScore}</h4>
                 <div>
-                    <br/>
                     {this.state.isCorrectAnswer? <h3 style={{color: this.state.color}}>{this.state.correctAnswerText}</h3>
                     : <div></div>} 
                     <br/>
                     {this.state.question.length < this.state.currentQuestion? <h2>waiting on question</h2>: 
                     this.displayItems(this.state.question, this.state.answers)}
                 </div>
-
-            {this.state.waiting? <h3>You selected: {this.state.userAnswer}</h3>
+                    <br/>
+            {this.state.waiting? <h4 style={{textAlign:"center"}}> Your guess: <b style={{color:"navy"}}>{this.state.userAnswer}</b></h4>
             : <div></div>}
 
-            {this.state.waiting? <h3>Waiting for right answer...</h3>
+            {this.state.waiting? <h4 style={{textAlign:"center"}}>Waiting for right answer...</h4>
             : <div></div>}
          
             
@@ -306,36 +326,44 @@ return (
             <div className="sidebar">
             <td width={100}>
                 <tr>
-                <h3>Current Score:</h3>
+                <h3 className="regularText" style={{fontSize:"15pt", background:"white"}}>Game Score</h3>
 
                 <div className="wrapper">
                     <div className="one"><img className="profilePicture" width={78} height={60} src={coltsLogo}></img></div>
                     <div className="two"><h3>7</h3></div>
-                    <div className="three"><img className="profilePicture" width={80} height={60} src={texansLogo}></img></div>
+                    <div className="three"><img className="profilePicture" width={80} height={60} src={ramsLogo}></img></div>
                     <div className="four"><h3>0</h3></div>
                     <div className="five"></div>
-                    <div className="six"><img className="profilePicture" width={75} height={70} src={possession}></img></div>
+                    <div className="six"><img className="profilePicture" width={45} height={40} src={possession}></img></div>
                 </div>
 
                 <br/>
 
                 <div>
-                    <h4>{this.state.gameData[4].time}</h4>
-                    <h4>{this.state.gameData[3].yards}</h4>
+                    <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[4].time}</h4>
+                    <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[3].yards}</h4>
                 </div>
+                <hr/>
             
                 </tr>
                 <tr>
-                    <h2>Game top Scorers</h2> 
+                <h4 style={{fontSize:"15pt", background:"white"}} className="regularText">Whistle Leaderboard</h4>
                 <h3>{this.displayTopScorers()}</h3>
                 </tr>
+
+                <hr/>
+                <tr>
+                <h4 style={{fontSize:"15pt", background:"white"}} className="regularText">Today's Prize: Two Tickets for Colts @ 49ers 8/25/2021</h4>
+                </tr>
+
                 </td>
+                
             </div>
 
         
         {/* Section 3: Bottom left area with the game live updates */}
         <div className = "twin">
-                <h3>Live updates:</h3>
+                <h3 style={{background:"white"}}className="regularText">Game Updates:</h3>
                 <div className="scrollable">
                     {this.state.gameData.map((data, index) =>{
                         return (
@@ -351,7 +379,7 @@ return (
 
         {/* Section 4: Bottom right area with the live tweets */}
         <div className = "twin">
-            <h3>Live Tweets:</h3>
+            <h3 className="regularText"style={{background:"white"}}>Live Tweets #colts</h3>
                 
                 <div className="scrollable">
                     {this.state.tweets.map((data, index) =>{

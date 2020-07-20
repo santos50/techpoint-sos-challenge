@@ -46,7 +46,7 @@ router.post('/getTweets', (req,res) => {
   // console.log('tweets')
 
   var params = {
-    q: '#blm',
+    q: '#colts',
     count: 5,
     result_type: 'recent',
     lang: 'en'
