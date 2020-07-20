@@ -384,7 +384,7 @@ return (
                 <div className="scrollable">
                     {this.state.tweets.map((data, index) =>{
                         return <div className = "tweet">
-                        <img className="profilePicture" src={data.user.profile_image_url}></img>
+                        <img className="profilePicture" src={data.user.profile_image_url_https}></img>
                         <b> &nbsp; {data.user.name} &nbsp;@{data.user.screen_name}</b>
                         <p>{data.text} </p>
                          <hr/>
