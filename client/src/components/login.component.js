@@ -87,22 +87,6 @@ class Login extends Component {
             color: 'red'
         })
 
-      //  if (!this.props.auth.isAuthenticated) {
-      //         this.setState({
-      //           username: '',
-      //           password: '',
-      //           isSuccess: false,
-      //           passwordError: "incorrect password",
-      //           color: 'red'
-      //         })
-      //       }
-      //       else {
-      //         this.setState({
-      //           isSuccess: false,
-      //           passwordError: 'Logging in',
-      //           color: 'green'
-      //         })
-      //       }
       }
 
 

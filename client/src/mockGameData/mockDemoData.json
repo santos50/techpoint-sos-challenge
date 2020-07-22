@@ -1,0 +1,47 @@
+[   {
+    "id": 1,
+   "play": "Colts win coin toss. Indianapolis ball.",
+   "colts-points": 0,
+   "texans-points": 0,
+   "time": "15:00 remaining in the 1st",
+   "yards": "1st and 10"
+},
+
+{
+   "id": 2,
+   "play": "Luck with pressure but patient and completes pass to Hilton for a Colts first down.",
+   "colts-points": 0,
+   "texans-points": 0,
+   "time": "11:49 remaining in the 1st",
+   "yards": "3rd and 10"
+
+},
+
+{
+   "id": 3,
+   "play": "Luck aims for Hilton again, but nearly intercepted by Texans Johnathan Joseph. Incomplete.",
+   "colts-points": 0,
+   "texans-points": 0,
+   "time": "11:14 remaining in the 1st",
+   "yards": "2nd and 10"
+},
+
+{
+   "id": 4,
+   "play": "TY with the catch! Luck hits Hilton for a big gain of 38 yards.",
+   "colts-points": 0,
+   "texans-points": 0,
+   "time": "11:14 remaining in 1st",
+   "yards": "1st and Goal"
+},
+
+{
+   "id": 5,
+   "play": "LUCK TO EBRON. TOUCHDOWN!",
+   "colts-points": 0,
+   "texans-points": 6,
+   "time": "10:34 remaining in the 1st",
+   "yards": "TOUCHDOWN"
+}
+
+]

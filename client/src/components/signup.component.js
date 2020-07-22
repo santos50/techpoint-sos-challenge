@@ -3,7 +3,7 @@ import { withRouter,  } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../actions/authActions";
-
+import axios from 'axios';
 
 class SignUp extends Component {
     constructor(props) {
@@ -68,28 +68,21 @@ class SignUp extends Component {
           email: this.state.email
         }
     
-        this.props.registerUser(user, this.props.history); 
+        // this.props.registerUser(user, this.props.history); 
+        axios.post("/add", user) 
+        .then(res => this.props.history.push("/sign-in")) // re-direct to login on successful register
+        .catch(err =>
+          this.setState({
+            name: '',
+            password: '',
+            email: '',
+            createError: 'Username or email is taken',
+          })
+
+
+        );
         
-           this.setState({
-              name: '',
-              password: '',
-              email: '',
-              createError: 'Username or email is taken',
-            })
-        // axios.post('/add', user)
-        //   .then(res => {console.log(res.data);
-        //     this.setState({
-        //       isSuccess: true
-        //     })
-        //   })
-        //   .catch(error => {console.log(error);
-        //     this.setState({
-        //       name: '',
-        //       password: '',
-        //       email: '',
-        //       createError: 'Username or email is taken',
-        //     })
-        //   });
+            
     
       }
 

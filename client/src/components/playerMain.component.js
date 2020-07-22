@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
-import GameData from '../mockGameData/mockGameUpdates.json';
+import GameData from '../mockGameData/mockDemoData.json';
 import "../playerMain.css";
 import coltsLogo from '../images/indianapolis-colts-logo.png';
-import ramsLogo from '../images/los-angeles-rams-logo.png';
+import texansLogo from '../images/houston-texans-logo.png';
 import possession from '../images/possession-football.png';
 import UIfx from 'uifx'
 import whistleAudio from '../images/whistle.m4a';
@@ -18,7 +18,7 @@ const item = localStorage.getItem('jwtToken');
 sessionStorage.setItem(item, 0);
 var sessionScore = parseInt(sessionStorage.getItem(item));
 var photoIndex = 0;
-var gameDataIndex = 0;
+var gameDataIndex = 2;
 var gameDataTimer = 0;
 
 
@@ -173,7 +173,7 @@ getItems = () => {
 
     gameDataTimer++;
 
-    if (gameDataTimer === 7) {
+    if (gameDataTimer === 9) {
         gameDataTimer = 0;
         gameDataIndex++;
     }
@@ -365,7 +365,7 @@ return (
                 <div className="wrapper">
                     <div className="one"><img className="profilePicture" width={78} height={60} src={coltsLogo} alt="score"></img></div>
                     <div className="two"><h3>{this.state.gameData[gameDataIndex]["colts-points"]}</h3></div>
-                    <div className="three"><img className="profilePicture" width={80} height={60} src={ramsLogo}alt="score"></img></div>
+                    <div className="three"><img className="profilePicture" width={80} height={60} src={texansLogo}alt="score"></img></div>
                     <div className="four"><h3>{this.state.gameData[gameDataIndex]["texans-points"]}</h3></div>
                     <div className="five"></div>
                     <div className="six"><img className="profilePicture" width={45} height={40} src={possession}alt="score"></img></div>
