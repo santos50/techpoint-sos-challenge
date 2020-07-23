@@ -344,7 +344,6 @@ return (
                     {this.state.question.length < this.state.currentQuestion? <h2>waiting on question</h2>: 
                     this.displayItems(this.state.question, this.state.answers)}
                 </div>
-                    <br/>
             {this.state.waiting? <h4 style={{textAlign:"center"}}> Your guess: <b style={{color:"navy"}}>{this.state.userAnswer}</b></h4>
             : <div></div>}
 
