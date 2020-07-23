@@ -173,7 +173,7 @@ getItems = () => {
 
     gameDataTimer++;
 
-    if (gameDataTimer === 9) {
+    if (gameDataTimer === 6) {
         gameDataTimer = 0;
         gameDataIndex++;
     }
