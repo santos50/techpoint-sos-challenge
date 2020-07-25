@@ -1,5 +1,5 @@
 ## TechPoint S.O.S Challenge Summer 2020
-# Whistle
+# [Whistle](https://devpost.com/software/sports-and-entertainment-team-2)
 
 Whistle is a non-currency betting game that allows fans to guess sports outcomes for prizes in real-time (as they watch the game). Intended to be used for the entertainment industry to allow continued engagement among fans in response to COVID-19’s effect on sports stadium/venue closings. Twitter API functionalities included. MERN Stack application, deployed on Heroku.
 
