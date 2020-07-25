@@ -3,17 +3,8 @@ const app = express();
 const passport = require("passport");
 const path = require('path');
 require('dotenv').config();
-// const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 5000;
-
-// Bodyparser middleware
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: false
-//   })
-// );
-// app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/techpoint_challenge";

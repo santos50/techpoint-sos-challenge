@@ -1,17 +1,14 @@
+// UNUSED FILE
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser} from "../actions/authActions";
 import axios from 'axios';
 
-
-
-
 var topScorers=[];
 
 class GameEnd extends Component {
-
-
   constructor(props) {
     super(props);
 
@@ -21,7 +18,6 @@ class GameEnd extends Component {
     }
 
   }
-
 
   async componentDidMount() {
    this.getTopScorers();
@@ -39,12 +35,7 @@ class GameEnd extends Component {
       .catch(res => {
           console.log(res);
     });
-
-
-    
       this.checkScorers();
-    
-    
   
 }
 
@@ -57,8 +48,6 @@ checkScorers() {
     }
   }
 }
-
-
 
 render() {
   const { user } = this.props.auth;

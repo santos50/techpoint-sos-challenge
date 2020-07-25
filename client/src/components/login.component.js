@@ -3,15 +3,15 @@ import SignUp from "./signup.component";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../actions/authActions";
-
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import logo from '../images/whistle-main.png';
 
+
 window.currQuestion = 0;
 window.start = false;
+
+//current question index set
 sessionStorage.setItem('currentQuestion', 0);
-
-
 
 class Login extends Component {
     constructor(props) {
@@ -29,20 +29,17 @@ class Login extends Component {
           color: 'black'
         }
       }
-    
 
       componentDidMount() {
-   
-        // If logged in and user navigates to Login page, should redirect them to dashboard
+        // If logged in and user navigates to Login page, should redirect them to home screen
         if (this.props.auth.isAuthenticated) {
           this.props.history.push("/home");
         }
       }
 
-
       componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
-          this.props.history.push("/home"); // push user to dashboard when they login
+          this.props.history.push("/home"); // push user to home when they login
         }
         if (nextProps.errors) {
           this.setState({
@@ -50,7 +47,6 @@ class Login extends Component {
           });
         }
       }
-
 
       onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
@@ -68,6 +64,7 @@ class Login extends Component {
         })
       }
 
+      //logs in user if correct username and password
       onSubmit(e) {
         e.preventDefault();
     
@@ -75,7 +72,6 @@ class Login extends Component {
           username: this.state.username,
           password: this.state.password,
         }
-
 
         this.props.loginUser(user);
        
@@ -89,18 +85,17 @@ class Login extends Component {
 
       }
 
-
     render() {
 
         return (
           <div className = "Main">
-          <div className="auth-wrapper">
-        <div className="auth-inner">
-            <form onSubmit={this.onSubmit}>
+            <div className="auth-wrapper">
+            <div className="auth-inner">
+              <form onSubmit={this.onSubmit}>
 
-            <h3>Welcome to Whistle</h3>
-            <h3><img border-radius={50} width={135} height={75} alt="" src={logo}/></h3>
-            <h6 className="text-center">Sign in</h6>
+                <h3>Welcome to Whistle</h3>
+                <h3><img border-radius={50} width={135} height={75} alt="" src={logo}/></h3>
+                <h6 className="text-center">Sign in</h6>
 
                 <div className="form-group">
                     <label>Username</label>
@@ -110,7 +105,7 @@ class Login extends Component {
                 <div className="form-group">
                     <label>Password</label>
                     <input type="password" className="form-control" placeholder="Enter password"  value={this.state.password} onChange={this.onChangePassword}/>
-                    
+                    {/* For UI to show correct error handling; had to take out */}
                     {/* {this.state.isSuccess? <div></div>:<div style={{ fontsize: 12, color: this.state.color}}>
                         {this.state.passwordError}
                     </div> } */}
@@ -121,14 +116,13 @@ class Login extends Component {
                     Don't have an account? <a href="/sign-up" component={SignUp}>Sign up</a>
                 </p>
             </form>
-          </div>
-          </div>
+            </div>
+            </div>
           </div>
             
         );
     }
 }
-
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,

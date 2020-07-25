@@ -13,16 +13,18 @@ import UIfx from 'uifx'
 import whistleAudio from '../images/whistle.m4a';
 import photos from '../mockGameData/mockProfilePhotos.json';
 
+//getting logged in user info
 const jwt = require("jsonwebtoken");
 const item = localStorage.getItem('jwtToken');
+//item is the user's score in the session
 sessionStorage.setItem(item, 0);
 var sessionScore = parseInt(sessionStorage.getItem(item));
-var photoIndex = 0;
-var gameDataIndex = 2;
-var gameDataTimer = 0;
 
+var photoIndex = 0; //for whistle players photo slideshow
+var gameDataIndex = 2; //index for the live game feed data for the demo
+var gameDataTimer = 0; //timer for the live game feed for the demo
 
-
+//sounds effects for when new question comes in
 const audio = new UIfx(
     whistleAudio,
     {
@@ -30,7 +32,6 @@ const audio = new UIfx(
       throttleMs: 100
     }
   )
-   
 
 class PlayerMain extends Component {
 
@@ -64,36 +65,29 @@ class PlayerMain extends Component {
             photos: photos,
             expired: false,
 
-        }
-      
-        
+        } 
       }
+//gets all data needed for page
 async componentDidMount() {
     this.getItems();
 }
-
-
 async componentWillUnmount() {
     /*
-      stop getData() from continuing to run even
+      stop getItems() from continuing to run even
       after unmounting this component
     */
-   console.log('interval id: ', this.intervalID);
     clearInterval(this.intervalID);
-  }
+}
 
 getItems = () => {
+
+    //data for admin questions and answers
     axios.post('/getPlayerQuestions')
     .then(response => { 
-      //  console.log(response.data);
-        if (response.data.expired) {
-            
+        if (response.data.expired) {   
              this.setState({expired:true})
         }
-      
         const data = response.data.questions;
-
-    
 
         this.setState({
             answers: response.data.answers,
@@ -103,45 +97,35 @@ getItems = () => {
             answerPointValues: response.data.answerPointValues,
         });
 
-
         if (data !== undefined) {
             this.setState({question: data})
-           // console.log(this.state.question)
         }
 
-       // console.log('data received')
-
-                 // call getData() again in 5 seconds
-              //console.log('currentQuestion ', this.state.currentQuestion)
+                //set of if statements to check if user has selected an answer/it is the rif
                  if (this.state.rightAnswer !== undefined)
                  if (this.state.rightAnswer.length >= this.state.question.length) {
                      if (this.state.userAnswerIndex !== undefined) {
-                    if (this.state.rightAnswer[this.state.currentQuestion-1] === this.state.userAnswerIndex) {
+                        if (this.state.rightAnswer[this.state.currentQuestion-1] === this.state.userAnswerIndex) {
 
-                        //console.log(this.state.rightAnswer[this.state.currentQuestion-1])
-                       // console.log(this.state.userAnswerIndex)
-                       var addPoints = this.state.answerPointValues[this.state.currentQuestion-1][this.state.userAnswerIndex];
-                       sessionScore += addPoints;
-
-                       sessionStorage.setItem(item, sessionScore);
-
-                        this.setState({  waiting: false, isCorrectAnswer: true, correctAnswerText: 'Correct! ✅', color: 'green' });
-                        this.onSubmitScore()
-                    } 
+                            //the player got the correct answer & score gets updated
+                            var addPoints = this.state.answerPointValues[this.state.currentQuestion-1][this.state.userAnswerIndex];
+                            sessionScore += addPoints;
+                            sessionStorage.setItem(item, sessionScore);
+                            this.setState({  waiting: false, isCorrectAnswer: true, correctAnswerText: 'Correct! ✅', color: 'green' });
+                            this.onSubmitScore()
+                        } 
                         if (!this.state.isCorrectAnswer) {
                             this.setState({isCorrectAnswer: true, correctAnswerText: 'Wrong ❌', color: 'red'})
                         }
                     this.setState({userAnswerIndex: undefined, userAnwer: ''});
                 }
-
                     this.setState({waiting: false, playAudio: true})
                  }
                  
     })
     .catch(err => console.log(err));
 
-
-
+    //data for twitter feed
     axios.post('/getTweets')
     .then(response => {
 
@@ -161,8 +145,10 @@ getItems = () => {
     })
     .catch( err=>console.log(err));
 
+    //gets leaderboard data
     this.getTopScorers();
 
+    //for demo timing for mock data
     this.setState({isCorrectAnswer: false})
 
     if (photoIndex>= this.state.photos.length) {
@@ -184,11 +170,10 @@ getItems = () => {
 
     this.intervalID = setTimeout(this.getItems.bind(this), 5000);
 }
+//end getItems()
 
+//displays question and answers from admin
 displayItems = (question, answers) => {
-    //console.log(question);
-    // console.log(currentQuestion)
-   // this.setState({question: this.state.question});
 
    if (!this.state.expired && question[this.state.currentQuestion]===undefined) {
        return <h2>waiting on question</h2>
@@ -201,9 +186,9 @@ displayItems = (question, answers) => {
         if (this.state.topScorers[i].username === user.user.id) {
           flag = true;
         }
-      }
+     }
 
-
+     //no game in progress and user is top 5 scorer
        if (flag) {
             return (
                 <div>
@@ -213,6 +198,7 @@ displayItems = (question, answers) => {
             </div>
             )
        } else {
+        //no game in progress and user is not a top 5 scorer
             return(
             <div>
             <h2 className="regularText">No current game in progress!</h2> 
@@ -223,7 +209,7 @@ displayItems = (question, answers) => {
        }
    }
 
-
+   //whistle sound effect plays when new question comes in
    if (this.state.playAudio) {
         audio.play();
         this.setState({playAudio: false})
@@ -242,17 +228,19 @@ displayItems = (question, answers) => {
             }
         </h3>
     </div> 
-
 }
+//ends displayItems()
 
 
+//user's answer is selected
 onClick(e, index) {
     this.setState({  userAnswer: this.state.answers[this.state.currentQuestion][index], userAnswerIndex: index, waiting: true});
 }
-  
+
+//if score is updated, then submits new score to database
 onSubmitScore() {
-   // e.preventDefault();
-    console.log("in the submittt")
+   
+    //for obtaining current user
     const j = localStorage.getItem('jwtToken'); 
     var payload = jwt.verify(j, "randomString");
 
@@ -268,21 +256,17 @@ onSubmitScore() {
             userAnswer: '',
             userAnswerIndex: undefined,
         });
-      
-      //  this.forceUpdate();
- 
       })
       .catch(res => {
           console.log(res);
     });
-  
 }
 
+//gets leaderboard top 5 scorers
 getTopScorers() {
     axios.post('/getLeaderboard')
       .then(res => {
         //success
-
         this.setState( {
             topScorers: res.data
         });
@@ -291,13 +275,12 @@ getTopScorers() {
       .catch(res => {
           console.log(res);
     });
-  
 }
 
+//displays top 5 with progress bars
 displayTopScorers() {
     return ( <div>
     <h3>
-
         {this.state.topScorers.map((scorers, index) => 
         <div key={index}>
             <h3 style={{fontSize:"15pt", textAlign:"justify"}} className="regularText">{scorers.username} &nbsp;&nbsp;</h3><div className="progress" style={{width:scorers.score}}></div>
@@ -309,12 +292,10 @@ displayTopScorers() {
 }
 
 render() {
+    //getting current logged in user
     const { user } = this.props.auth;
-
 return (
-
 <div className = "playerHome">
-    
     <div className="grid">
 
         {/* Section 1: The area of the top left where the questions and answers are shown for the player */}
@@ -334,7 +315,6 @@ return (
         </div>
         <br/>
 
-
             <h1 className="titleName">{this.state.title}</h1>
             <h4 className="regularText">{user.user.id}'s score: {sessionScore}</h4>
                 <div>
@@ -349,7 +329,6 @@ return (
 
             {this.state.waiting? <h4 style={{textAlign:"center"}}>Waiting for right answer...</h4>
             : <div></div>}
-         
             
             </div>
 
@@ -359,7 +338,6 @@ return (
             <div className="sidebar">
             <div className="sideTable">
             <h3 className="regularText" style={{fontSize:"15pt", background:"white"}}>Game Score</h3>
-                
 
                 <div className="wrapper">
                     <div className="one"><img className="profilePicture" width={78} height={60} src={coltsLogo} alt="score"></img></div>
@@ -376,13 +354,10 @@ return (
                     <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[gameDataIndex].time}</h4>
                     <h4 style={{fontSize:"13pt"}}className="regularText">{this.state.gameData[gameDataIndex].yards}</h4>
                 </div>
-                <hr/>
-            
-                
+                <hr/>  
                 
                 <h4 style={{fontSize:"15pt", background:"white"}} className="regularText">Whistle Leaderboard</h4>
                 <h3>{this.displayTopScorers()}</h3>
-              
 
                 <hr/>
               
@@ -391,7 +366,6 @@ return (
                 </div>
                 
             </div>
-
         
         {/* Section 3: Bottom left area with the game live updates */}
         <div className = "twin">
@@ -413,7 +387,6 @@ return (
                     })}
                 </div>
         </div>
-
         
 
         {/* Section 4: Bottom right area with the live tweets */}

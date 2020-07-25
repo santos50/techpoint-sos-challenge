@@ -8,11 +8,10 @@ const jwt = require("jsonwebtoken");
 
 class HomePlayerMain extends Component {
 
-
-  
 render() {
+  //for obtaining current user
   const j = localStorage.getItem('jwtToken'); 
-    var payload = jwt.verify(j, "randomString");
+  var payload = jwt.verify(j, "randomString");
 
 return (
       <div className = "Home">

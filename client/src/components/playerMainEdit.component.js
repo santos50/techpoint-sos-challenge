@@ -1,3 +1,5 @@
+//NOT IN FINAL APPLICATION, USED FOR UI DESIGNING OF PLAYERS' MAIN PAGE IN DEV
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -9,7 +11,6 @@ import coltsLogo from '../images/indianapolis-colts-logo.png';
 import texansLogo from '../images/houston-texans-logo.png';
 import possession from '../images/possession-football.png';
 import tweetData from '../mockGameData/mockTweets.json';
-
 
 var index = 0;
 

@@ -7,10 +7,9 @@ import "../home.css";
 window.currQuestion = 0;
 class Logout extends Component {
 
- 
     componentDidMount() {
    
-        // If logged in and user navigates to Login page, should redirect them to dashboard
+        // Logs current user out
         if (localStorage.jwtToken) {
             this.props.logoutUser();
         }
@@ -18,14 +17,11 @@ class Logout extends Component {
       }
 
 render() {
-
 return (
-    // <Link to="/sign-in" component={Login}></Link>
     <div>Logout</div>
     );
   }
 }
-
 Logout.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired

@@ -5,11 +5,10 @@ import { logoutUser } from "../actions/authActions";
 import "../home.css";
 import axios from 'axios';
 
-
+//saves current question index
 var sessionCurrentQuestion = parseInt(sessionStorage.getItem("currentQuestion"));
 
 class AdminMain extends Component {
-
 
     constructor(props) {
         super(props);
@@ -17,8 +16,8 @@ class AdminMain extends Component {
         this.onChangeQuestion = this.onChangeQuestion.bind(this);
         this.handleDropDownChange = this.handleDropDownChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-       this.onPost = this.onPost.bind(this);
-       this.onEndGame = this.onEndGame.bind(this);
+        this.onPost = this.onPost.bind(this);
+        this.onEndGame = this.onEndGame.bind(this);
 
         this.state = {
             question: '',
@@ -34,7 +33,7 @@ class AdminMain extends Component {
         
       }
 
-
+//ends game by updating game's expired field
 onEndGame() {
   axios.post('/endGame')
     .then(res => {
@@ -45,6 +44,7 @@ onEndGame() {
         rightAnswer: 0,
         posted: false,
     });
+    //set current question back to 0
     sessionStorage.setItem("currentQuestion", 0);
       this.props.history.push('/createGame')
     })
@@ -53,10 +53,12 @@ onEndGame() {
   });
 }
 
+//updates UI and answers array with adding answers
 addAnswer() {
     this.setState({answers: [...this.state.answers, ""], answerPointValues: [...this.state.answerPointValues, ""]})
 }
 
+//updates UI and answers array with removing answers
 removeAnswer(index) {
     this.state.answers.splice(index, 1)
     this.state.answerPointValues.splice(index, 1)
@@ -65,19 +67,18 @@ removeAnswer(index) {
 }
 
 handleChange(e, index) {
-    this.state.answers[index] = e.target.value;
-    
+    this.state.answers[index] = e.target.value; 
     this.setState({answers: this.state.answers, rightAnswer:index})
-    // this.setState({rightAnswer: index});
-
 }
 
+//updates answer point values array
 handlePointsChange(e,index) {
   this.state.answerPointValues[index] = e.target.value;
   this.setState({answerPointValues:this.state.answerPointValues})
 
 }
 
+//when admin wants to start a new question
 onChangeQuestion(e) {
   if (this.state.question === '' && this.state.dropDown !== '') {
     this.setState({
@@ -88,8 +89,9 @@ onChangeQuestion(e) {
       question: e.target.value
     })
   }
-  }
+}
 
+//posts question to players
 onPost(e) {
     e.preventDefault();
 
@@ -110,12 +112,11 @@ onPost(e) {
 
 }
 
-
+//posts the right answer to the players and resets the page and arrays
 onSubmit(e) {
     e.preventDefault();
 
     window.currQuestion++;
-
     sessionCurrentQuestion++;
     sessionStorage.setItem('currentQuestion', sessionCurrentQuestion);
 
@@ -124,8 +125,6 @@ onSubmit(e) {
       currQuestion: sessionCurrentQuestion,
     }
    
-    console.log(gameItems);
-
     axios.post('/postCorrectAnswer', gameItems)
     .then(res => {
       //success
@@ -144,36 +143,28 @@ onSubmit(e) {
   });
 
 }
-  
-onActivate() {
-  window.currQuestion = 0;
-}
 
+//handles pre-existing question drop down menu
 handleDropDownChange(e) {
   this.setState({dropDown: e.target.value,});
 this.onChangeQuestion(e)
 }
 
 render() {
-
-
 return (
 
-      <div className = "Home">
- <div className="auth-wrapper">
-        <div className="auth-inner">
+  <div className = "Home">
+    <div className="auth-wrapper">
+      <div className="auth-inner">
 
 
-<h1>Create Question {sessionCurrentQuestion + 1}</h1>
+        <h1>Create Question {sessionCurrentQuestion + 1}</h1>
 
-{/* <h2 style={{postion: "right"}}>{window.currQuestion}</h2> */}
-
-        <form onSubmit={this.onSubmit}>
-        <div className="form-group">
-                    <label>Type a Question</label>
-                    <input type="text" className="form-control" placeholder="Enter question"  value={this.state.question} onChange={this.onChangeQuestion}/>
-
-                    <p className="forgot-password text-center">Or Select from Pre-Existing Questions</p>
+          <form onSubmit={this.onSubmit}>
+            <div className="form-group">
+                <label>Type a Question</label>
+                <input type="text" className="form-control" placeholder="Enter question"  value={this.state.question} onChange={this.onChangeQuestion}/>
+                <p className="forgot-password text-center">Or Select from Pre-Existing Questions</p>
 
                     <select className="form-control" name="None" onChange={this.handleDropDownChange} value={this.state.dropDown}>
                                 <option selected value={""}>None</option>
@@ -181,11 +172,12 @@ return (
                                 <option value={"What do you think the next play will be?"}>What do you think the next play will be?</option>
                                 <option value={"Will the next play be a touchdown?"}>Will the next play be a touchdown?</option>
                                 <option value={"Will they get a first down?"}>Will they get a first down?</option>
-                            </select>
+                    </select>
             </div>
 
-
+            {/* answers */}
             {this.state.posted?  <label>Answers (Choose correct answer after play)</label> : <label>Answers and Point Values</label>}
+           
             {
                 this.state.answers.map((answer, index) => {
                     return (
@@ -219,9 +211,9 @@ return (
             {this.state.posted? <button type="submit" className="btn btn-primary btn-block">Post Right Answer</button> 
             : <div></div>}
             
-            </form>
+          </form>
 
-            </div>
+          </div>
       </div>
 
       <button className="btn btn-primary btn-block" type="button" onClick={(e)=> this.onEndGame(e)}>End Game</button>

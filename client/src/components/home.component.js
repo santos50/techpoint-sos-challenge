@@ -6,12 +6,7 @@ import axios from 'axios';
 
 const jwt = require("jsonwebtoken");
 
-
-
-
 class Home extends Component {
-
-
   constructor(props) {
     super(props);
 
@@ -19,8 +14,6 @@ class Home extends Component {
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeAtHome = this.onChangeAtHome.bind(this);
     this.onContinue = this.onContinue.bind(this);
-
-  
 
     this.state = {
       password: '',
@@ -32,14 +25,7 @@ class Home extends Component {
   }
 
   onContinue() {
-   // e.preventDefault();
-   // this.props.setUserAdmin(user);
- 
-   // (this.state.atHome && this.props.history.push("/homePlayerMain"));
-
     this.props.history.push("/playerMain");
-
-
   }
 
   onChangeAtHome(e) {
@@ -63,64 +49,53 @@ class Home extends Component {
 
     const user = {
       username: payload.user.id,
-     // atHome: this.state.atHome,
       password: this.state.password,
 
     }
-
 
     axios.post('/userLocation', user)
           .then(res => {
             //success, they are an admin
             window.currQuestion = 0;
 
-            //if game is expired
-            
+            //if user is an admin and game is expired
             if (res.data) {
               this.props.history.push("/createGame");
             } else {
               this.props.history.push("/adminMain");
             }
-              
           })
           .catch(res => {
-
             //updated atHome for user, but is not the admin
-            
-
             if (this.state.password !== "") {
             this.setState({
-                continue: false,              })
+                continue: false,              
+            })
             } else {
               this.onContinue();
             }
         });
-
-
   }
 
 render() {
+    //obtains current user
     const { user } = this.props.auth;
-
 return (
       <div className = "Main">
- <div className="auth-wrapper">
-        <div className="auth-inner">
+        <div className="auth-wrapper">
+          <div className="auth-inner">
             <h3>
               <b>Welcome, {user.user.id}!</b>
             </h3>
-
-
-            <div>
-
-
-            <form onSubmit={this.onSubmit}>
-            {/* <div className="form-group">
-              <label>Are you at home or in the stadium?</label>
+    
+              <div>
+              <form onSubmit={this.onSubmit}>
+              {/* Commented out but could be used for future application */}
+              {/* <div className="form-group">
+                 <label>Are you at home or in the stadium?</label>
                  <input required type="radio" value="true" checked={this.state.atHome === 'true'} onChange={this.onChangeAtHome}/> Home 
                  <input required type="radio" value="false" checked={this.state.atHome=== 'false'} onChange={this.onChangeAtHome}/>  Stadium
-            </div> */}
-
+              </div> */}
               <div className="form-group">
                     <label>If you're an admin, enter the gameroom password. Otherwise, continue as player</label>
                     <input type="password" className="form-control" placeholder="Gameroom password" value={this.state.password} onChange={this.onChangePassword}/>
@@ -131,20 +106,19 @@ return (
             </form>
             
             <div>
-              <br></br>
+            <br></br>
             <form  onSubmit={this.onContinue}>
-            {this.state.continue? <div></div> : <button type="submit" className="btn btn-primary btn-block">Password incorrect for game room. Click to continue as player</button>}
+              {this.state.continue? <div></div> : <button type="submit" className="btn btn-primary btn-block">Password incorrect for game room. Click to continue as player</button>}
             </form>
             </div>
 
-      </div>
             </div>
-            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
-
 Home.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired

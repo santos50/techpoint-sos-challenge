@@ -9,22 +9,20 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
+//pages
 import PrivateRoute from "./components/private-route/PrivateRoute";
-
 import Login from "./components/login.component";
 import Logout from "./components/logout.component";
 import SignUp from "./components/signup.component";
 import Home from "./components/home.component";
 import AdminMain from "./components/adminMain.component";
 import PlayerMain from "./components/playerMain.component";
-// import PlayerMainEdit from "./components/playerMainEdit.component";
 import HomePlayerMain from "./components/homePlayerMain.component";
 import CreateGame from "./components/createGame.component";
 // import GameEnd from "./components/gameEnd.component";
+// import PlayerMainEdit from "./components/playerMainEdit.component";
 
 import logo from './images/whistle-main.png';
-
-
 
 window.currQuestion = 0;
 if (localStorage.jwtToken) {
@@ -35,7 +33,7 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
-// Check for expired token
+  // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
   if (decoded.exp < currentTime) {
     // Logout user
@@ -48,23 +46,11 @@ if (localStorage.jwtToken) {
 
 
 export default class App extends Component {
-  
- 
-  // useEffect(() => {
-  //   axios.get('/example')
-  //   .then(response => console.log(response))
-  //   .catch(err => console.log(err));
-
-  //   axios.get('/all')
-  //   .then(response => console.log(response))
-  //   .catch(err => console.log(err));
-
-  // });
 
   render() {
   return (
     <Provider store={store}>
-  <Router>
+      <Router>
     
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
@@ -81,27 +67,21 @@ export default class App extends Component {
           </div>
         </div>
       </nav>
-     
-      
-     
-      {/* <div className="auth-wrapper">
-        <div className="auth-inner"> */}
+
         <Switch>
             <Route exact path='/' component={Login} />
             <Route path="/sign-in" component={Login} />
             <Route path="/sign-up" component={SignUp} />
             <Route path="/logout" component={Logout}/>
-            {/* <Route path="/playerMainEdit" component={PlayerMainEdit}/> */}
             <PrivateRoute exact path="/home" component={Home} />
             <PrivateRoute exact path="/adminMain" component={AdminMain} />
             <PrivateRoute exact path="/createGame" component={CreateGame} />
             <PrivateRoute exact path="/playerMain" component={PlayerMain} />
             <PrivateRoute exact path="/homePlayerMain" component={HomePlayerMain} />
             {/* <PrivateRoute exact path="/gameEnd" component={GameEnd} /> */}
+            {/* <Route path="/playerMainEdit" component={PlayerMainEdit}/> */}
           </Switch>
-        {/* </div>
-      </div> */}
-   </Router>
+    </Router>
    </Provider>
   );
 }

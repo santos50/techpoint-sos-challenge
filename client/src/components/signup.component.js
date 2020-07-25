@@ -25,7 +25,7 @@ class SignUp extends Component {
       }
 
       componentDidMount() {
-        // If logged in and user navigates to Register page, should redirect them to dashboard
+        // If logged in and user navigates to Register page, should redirect them to home
         if (this.props.auth.isAuthenticated) {
           this.props.history.push("/home");
         }
@@ -67,8 +67,7 @@ class SignUp extends Component {
           password: this.state.password,
           email: this.state.email
         }
-    
-        // this.props.registerUser(user, this.props.history); 
+
         axios.post("/add", user) 
         .then(res => this.props.history.push("/sign-in")) // re-direct to login on successful register
         .catch(err =>
@@ -78,12 +77,7 @@ class SignUp extends Component {
             email: '',
             createError: 'Username or email is taken',
           })
-
-
-        );
-        
-            
-    
+        );       
       }
 
     render() {
