@@ -6,6 +6,17 @@ Whistle is a non-currency betting game that allows fans to guess sports outcomes
 
 Access the site here: [Whistle](techpoint-sos-challenge.herokuapp.com)
 
+# TechPoint Team
+**Go Tean**
+* Michael Boyajian (Project Manager)
+* Katelyn Le (Business/Marketing Development)
+
+**Pro Team**
+* Dianne Santos (Website Developer)
+* Chris Breuer (Website Developer/Designer)
+* Sumeeth Guda (Website Developer)
+
+
 
 ---
 ## Technical Documentation
