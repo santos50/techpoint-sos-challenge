@@ -24,7 +24,7 @@
     "express-validator": "^6.6.0",
     "heroku": "^7.42.4",
     "is-empty": "^1.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.19",
     "mongoose": "^5.9.21",
     "passport": "^0.4.1",
